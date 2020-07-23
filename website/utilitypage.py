@@ -67,7 +67,7 @@ def search():
     elif request.method == "GET":
         return render_template("interactive_map.html")
 
-
+'''
 @app.route('/nwis_data/<path:site_no>',methods=['GET'])
 def send_data(site_no):
     query = """SELECT a.*, b.site_name FROM nwis.daily a JOIN nwis.sites b 
@@ -75,54 +75,9 @@ ON a.nwis_site_no = b.nwis_site_no WHERE a.nwis_site_no = '{}'""".format(site_no
     data = pd.read_sql_query(query, cnx)# get site_data from sql 
     data['ts'] = data['ts'].apply(lambda x: x.strftime("%Y-%m-%d") )
     # {"dates": [1,2,3,4], "signal": [1,2,3,4]}
-
     return jsonify(**data.to_dict('split'))
 '''
-@app.route('/nwis_groundwater/<path:site_no>',methods=['GET'])
-def send_groundwater_data(site_no):
-    query = """SELECT * FROM nwis.groundwater_daily_site_2 WHERE site_number = '{}'""".format(site_no)
-    data = pd.read_sql_query(query, cnx)# get site_data from sql 
 
-    #data['ts'] = data['ts'].apply(lambda x: x.strftime("%Y-%m-%d") )
-    # {"dates": [1,2,3,4], "signal": [1,2,3,4]}
-
-    return jsonify(**data.to_dict('split'))
-
-@app.route('/nwis_surfacewater/<path:site_no>',methods=['GET'])
-def send_surfacewater_data(site_no):
-    print(site_no)
-    query= """SELECT year, b.*, a.gage_height_min, a.gage_height_max, a.gage_mean FROM nwis.surfacewater_daily_site_2 a
-        LEFT JOIN (SELECT AVG(gage_height_min) gage_height_min_avg, AVG(gage_height_max) gage_height_max_avg, AVG(gage_mean) gage_mean_avg, day, month, datenew
-        FROM nwis.surfacewater_daily_site_2
-        WHERE site_number = '{site_no}'
-        GROUP BY month, day, datenew) b
-        ON a.month=b.month AND a.day = b.day
-        WHERE site_number = '{site_no}' AND DATE_PART('day',b.datenew::TIMESTAMP - NOW()) > -365
-        ORDER BY month, day ASC""".format(site_no=site_no)
-
-    data = pd.read_sql_query(query, cnx)# get site_data from sql 
-    #data['date'] = pd.to_datetime(data['date']);
-    #data['date'] = data['date'].dt.date;
-    #data['ts'] = data['ts'].apply(lambda x: x.strftime("%Y-%m-%d") )
-    # {"dates": [1,2,3,4], "signal": [1,2,3,4]}
-    #print(data['date'][0])
-    return data.to_json();
-'''
-'''
-@app.route('/nwis_surfacewater/<path:site_no>/<path:year_given>',methods=['GET'])
-def send_surfacewater_data(site_no, year_given):
-    query = """SELECT year, gage_height_min, gage_height_max, gage_mean, datenew, day, month, site_number FROM nwis.surfacewater_daily_site_2 
-    WHERE site_number = '{}' AND year = '{}' ORDER BY year, month, day ASC""".format(site_no, year_given)
-    data = pd.read_sql_query(query, cnx)
-    return data.to_json();
-
-@app.route('/nwis_surfacewater_avg/<path:site_no>',methods=['GET'])
-def send_surfacewater_avg(site_no):
-    query = """SELECT month, day, AVG(gage_height_min) gage_height_min_avg, AVG(gage_height_max) gage_height_max_avg, AVG(gage_mean) gage_mean_avg 
-    FROM nwis.surfacewater_daily_site_2 WHERE site_number = '{}' GROUP BY month, day ORDER BY month, day""".format(site_no)
-    data = pd.read_sql_query(query, cnx)
-    return data.to_json();
-'''
 @app.route('/nwis_surfacewater_avg/<path:site_no>/<path:start_date>/<path:end_date>', methods=['GET'])
 def send_surfacewater_avg(site_no, start_date, end_date):
     query = """SELECT a.datenew, b.gage_height_min_avg, b.gage_height_max_avg, b.gage_mean_avg,
@@ -130,6 +85,22 @@ def send_surfacewater_avg(site_no, start_date, end_date):
         FROM nwis.surfacewater_daily_site_2 a
         RIGHT JOIN (SELECT MIN(gage_height_min) gage_height_min_avg, MAX(gage_height_max) gage_height_max_avg, AVG(gage_mean) gage_mean_avg, day, month
         FROM nwis.surfacewater_daily_site_2
+        WHERE site_number = '{site_no}'
+        GROUP BY month, day) b
+        ON a.month=b.month AND a.day = b.day
+        WHERE site_number = '{site_no}' AND a.datenew::TIMESTAMP BETWEEN '{start_date}'::TIMESTAMP AND '{end_date}'::TIMESTAMP
+        ORDER BY a.year, a.month, a.day ASC""".format(site_no= site_no, start_date= start_date, end_date= end_date)
+    data= pd.read_sql_query(query, cnx)
+    df1 = data.astype(object).replace(np.nan, 'None')
+    return jsonify(**df1.to_dict('split'));
+
+@app.route('/nwis_groundwater_avg/<path:site_no>/<path:start_date>/<path:end_date>', methods=['GET'])
+def send_groundwater_avg(site_no, start_date, end_date):
+    query = """SELECT a.datenew, b.depth_below_land_ft_min_avg, b.depth_below_land_ft_max_avg, b.depth_below_land_ft_mean_avg,
+        a.depth_below_land_ft_min, a.depth_below_land_ft_max, a.depth_below_land_ft_mean
+        FROM nwis.groundwater_daily_site_2 a
+        RIGHT JOIN (SELECT MIN(depth_below_land_ft_min) depth_below_land_ft_min_avg, MAX(depth_below_land_ft_max) depth_below_land_ft_max_avg, AVG(depth_below_land_ft_mean) depth_below_land_ft_mean_avg, day, month
+        FROM nwis.groundwater_daily_site_2
         WHERE site_number = '{site_no}'
         GROUP BY month, day) b
         ON a.month=b.month AND a.day = b.day
