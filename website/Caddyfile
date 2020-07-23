@@ -1,0 +1,4 @@
+67.159.92.20:3000 {
+	cgi / /home/rapiduser/ABOUT-ME/website/utilitypage.cgi
+    errors /home/rapiduser/ABOUT-ME/website/errorlog.txt
+}
