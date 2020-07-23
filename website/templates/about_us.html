@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Data+ Utility Finder About Us</title>
+		<link href="{{ url_for('static', filename='stylesheets/style.css') }}" rel="stylesheet" type="text/css"/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"/>
+		<link rel="icon" href="{{ url_for('static', filename='img/cropped-iow_favicon-32x32.png') }}" sizes="32x32">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	</head>
+	<body>
+	<div class="topnav">
+	  <a href="https://internetofwater.org/" class="iow" target="_blank"><img src="{{ url_for('static', filename='img/iowclearwhite.png') }}"></a>
+	  <a href="/" class="navigation fa fa-home"></a>
+	  <a href="./about_us" class="navigation">About Us</a>
+	  <a href="./utilityfinder" class="navigation">Utility Finder</a>
+	  <a href="./search" class="navigation">Interactive Map</a>
+	</div>
+	<h1 class="homeheader">About Us</h1>
+	<div class="paragraph">
+		<hr>
+		<h2>Background:</h2>
+			<p>Hello! Thank you for visiting our website. Created by a motivated team from Duke University’s summer research program, Data+, we are excited to be providing useful information to North Carolina residents. Our team is composed of three undergraduate interns, Ben Williams, Peyton Cox, and Roy Wang. The three have a passion for the intersection of data science and sustainability. They are mentored by Evan Wyse, a statistics graduate student with years of data science industry experience.</p>
+		<hr>
+		<h2>Meet the Team:</h2>
+				<div class="team">
+					<div class="profile a">
+						<img src = "{{ url_for('static', filename='img/ben.jpg') }}" >
+						<p class="caption">Ben Williams</p>
+					</div>
+					<div class="profile b">
+						<img src = "{{ url_for('static', filename='img/peyton.jpg') }}" >
+						<p class="caption">Peyton Cox</p>
+					</div>
+					<div class="profile c">
+						<img src = "{{ url_for('static', filename='img/roy2.jpg') }}">
+						<p class="caption">Roy Wang</p>
+					</div>
+					<div class="profile d">
+						<img src= "{{ url_for('static', filename='img/evan.jpg') }}">
+						<p class= "caption">Evan Wyse</p>
+					</div>
+				</div>
+	</div>
+	</body>
+	</html>

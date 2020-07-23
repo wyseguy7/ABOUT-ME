@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Data+ Utility Finder Homepage</title>
+		<link href="{{ url_for('static', filename='stylesheets/style.css') }}" rel="stylesheet" type="text/css"/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"/>
+		<link rel="icon" href="{{ url_for('static', filename='img/cropped-iow_favicon-32x32.png') }}" sizes="32x32">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+	</head>
+	<body>
+	<div class="topnav">
+	  <a href="https://internetofwater.org/" class="iow" target="_blank"><img src="{{ url_for('static', filename='img/iowclearwhite.png') }}"></a>
+	  <a href="/" class="navigation fa fa-home"></a>
+	  <a href="./about_us" class="navigation">About Us</a>
+	  <a href="./utilityfinder" class="navigation">Utility Finder</a>
+	  <a href="./search" class="navigation">Interactive Map</a>
+	</div>
+	<h1 class="homeheader">Group 3 ABOUT-US Utility Finder Tool</h1>
+	<nav class='internallinks'>
+			<a href="#about">About the Project</a>
+			<a href="#sponsor">Sponsors</a>
+	</nav>
+	<div id="abouttext">
+		<br>
+		<hr>
+		<h2><a name="about">About the Project:</a></h2>
+		<p class='first'>Our client, the Triangle Water Supply Partnership, noticed a lack of reliable and up-to-date information about water conditions and corresponding water conservation plans. They tasked us with creating a useful tool for both utility companies in North Carolina and their respective users.</p>
+		<p>Back in 2014, the Flint Michigan water crisis became a major story in the national news. After the city decided to switch from Detroit’s water system to the Flint River in an effort to save money, many residents were met with frightening orangish water. The water contained amounts of chlorine and lead way beyond federal standards. Flint Michigan is a good example of the necessity of accountable utilities companies and public information.</p>
+		<p>In Flint, the city was able to ignore the citizens’ complaints until national pressure increased. We hope to prevent future acts of injustice even if on a much smaller scale because water is a right. When environmental injustices occur, they disproportionately affect the most vulnerable populations and so accountability is key.</p>
+		<p>We are happy to have witnessed the successful launch of our website and hope it contributes to informed decision making. We would like to thank everyone who helped with the initial creation and eventual success of this project.</p>
+	</div>
+	<div id="sponsorimage">
+		<hr>
+		<h2><a>Sponsors:</a></h2>
+		<div class="endtag">
+			<img class= "sponsor" src="{{ url_for('static', filename='img/datapluslogo.png') }}">
+			<img class= "sponsor" src="{{ url_for('static', filename='img/iowclear.png') }}">
+			<img class= "sponsor" src="{{ url_for('static', filename='img/duke.png') }}">
+		</div>
+	</div>
+	</body>
+	</html>

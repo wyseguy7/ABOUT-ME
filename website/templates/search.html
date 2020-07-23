@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+       	<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+       	<link
+       	href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css"
+       	rel="stylesheet"/>
+    	<script src='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js'></script>
+    	<link href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet' />
+    	<script src="/node_modules/dygraphs/dist/dygraph.js"></script>
+      <link rel='houseicon' href="{{ url_for('static', filename='img/Home_icon_grey.png') }}">
+      <link rel="stylesheet" href="/node_modules/dygraphs/dist/dygraph.css"/>
+      <link href="{{ url_for('static', filename='stylesheets/style.css') }}" rel="stylesheet" type="text/css"/>
+    	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"/>
+    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="icon" href="{{ url_for('static', filename='img/cropped-iow_favicon-32x32.png') }}" sizes="32x32">
+		<!--<script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" /> -->
+		<title>Data+ Utility Finder Homepage</title>
+	</head>
+	<body>
+	<div class="topnav">
+	  <a href="https://internetofwater.org/" class="iow" target="_blank"><img src="{{ url_for('static', filename='img/iowclearwhite.png') }}"></a>
+	  <a href="/" class="navigation fa fa-home"></a>
+	  <a href="./about_us" class="navigation">About Us</a>
+	  <a href="./utilityfinder" class="navigation">Utility Finder</a>
+	  <a href="./search" class="navigation">Interactive Map</a>
+	</div>
+	<!-- <h1>Result</h1> -->
+	<div id="interface">
+		<section id="reporting">
+      <h1 style="text-align: center">Results</h1>
+      <div id="report_text">
+  			{% if gran == 'zipcode_level' %}
+  			<p class="warning"><strong>Warning: Address was unreadable so using zipcode to display utilities</strong></p>
+  			{% endif %}
+  			{% if uname == 'None' %}
+  			<p class="warning"><strong>Warning: No utility for your area to display</strong></p>
+  			{% endif %}
+        {% if ad == '' %}
+        <p><strong>No Address Given</strong></p>
+        {% else %}
+        <p><strong>Address is</strong> {{ad}}</p>
+        {% endif %}
+        <p><strong>Zipcode is</strong> {{zipc}}</p>
+        <!--<p>State is {{st}}</p>-->
+        <!--Granularity is : {{gran}}</p>-->
+  			<p><strong>Latitude is</strong> {{lat}}</p>
+        <p><strong>Longitude is</strong> {{lon}} </p>
+        {% if uname == 'None' %}
+  			<p><strong>No Utility/Well Water</strong></p>
+        {% else %}
+        <p><strong>Utility is </strong>{{uname}}</p>
+        {% endif %}
+        <br>
+  			<p style="text-align: center;"><strong>Follow this link to get conservation plan information:</strong></p><br>
+        <div id="plan_link"><a href={{linkname}} target="_blank">Conservation Plan</a></div>
+      </div>
+		</section>
+
+	<!-- 	<iframe src="map?lat={{lat}}&lon={{lon}}" id="mapfigure" style='float: left; width: 800px; height: 500px'></iframe> -->
+			<div id='mapfigure'></div>
+		    <div class="legend" id="searchleg">
+              <div><strong>PWSID:</strong>&nbsp;<span id="mag"></span></div>
+              <div><strong>Name:</strong>&nbsp;<span id="loc"></span></div>
+		    </div>
+		<!-- <div id="graphdiv"></div>. -->
+	<script type="text/javascript">
+  		var x = document.getElementById("graphdiv")
+  		//x.style.display = "none";
+  		var getJSON = function(url, callback) {
+  		    var xhr = new XMLHttpRequest();
+  		    xhr.open('GET', url, true);
+  		    xhr.responseType = 'json';
+  		    xhr.onload = function() {
+  		      var status = xhr.status;
+  		      if (status === 200) {
+  		        callback(null, xhr.response);
+  		      } else {
+  		        callback(status, xhr.response);
+  		      }
+  		    };
+  		    xhr.send();
+  		};
+
+		// is this the right place for this? 
+    	var data = 'date,precipitation\n2018-01-01,83.84160786786978\n';
+    	g = new Dygraph(
+
+      // containing div
+      document.getElementById("graphdiv"),
+
+      // CSV or path to a CSV file.
+      data,
+      {
+        ylabel: 'Amount (units)',
+        title: 'title', //'Calculation of Amount of Units from Streamgage',
+        legend: 'always'
+      }
+		  );
+
+		mapboxgl.accessToken = 'pk.eyJ1IjoiYnR3MTkiLCJhIjoiY2tiOGR6MzI1MDNjaTJ0c3hnZHBmODRneSJ9.QVj1xKQ--FUvtw6soygk9g';
+		var map = new mapboxgl.Map({
+			container: 'mapfigure',
+			style: 'mapbox://styles/mapbox/light-v10', // stylesheet location
+			center: [{{lon}}, {{lat}}], // starting position [lng, lat]
+			zoom: 12 // starting zoom
+		});
+
+    map.addControl(new mapboxgl.NavigationControl());
+
+		map.on('load', function() {
+        map.loadImage(
+        '/img/Home_icon_grey.png',
+        function(error, image) {
+        if (error) throw error;
+        map.addImage('house', image);
+        map.addSource('house', {
+          'type': 'geojson',
+          'data': {
+          'type': 'FeatureCollection',
+          'features': [
+            {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': [{{lon}}, {{lat}}]
+            }
+          }
+          ]
+          }
+          });
+        map.addLayer({
+          'id': 'house',
+          'type': 'symbol',
+          'source': 'house',
+          'layout': {
+            'icon-image': 'house',
+            'icon-size': 0.1
+          }
+        });
+        }
+        );
+        });
+
+
+        var magDisplay = document.getElementById('mag');
+
+
+
+      var locDisplay = document.getElementById('loc');
+
+
+      map.on('load', function() {
+
+
+        map.addSource('utilities-simplest', {
+
+
+
+          'type': 'vector',
+
+
+
+          'url': 'mapbox://btw19.2fhcidlx'
+
+
+
+        });
+
+
+        map.addLayer({
+
+          'id': 'utilities-simplest-viz',
+
+            'source-layer': 'EvenSimplerPolygonsNC-9cvs7f',
+
+            'type': 'fill',
+
+            'source': 'utilities-simplest',
+
+            'maxzoom': 6.99,
+                        'paint': {
+                    'fill-color':  [
+'interpolate',
+['linear'],
+['get', 'PWSID'],
+‘’,
+'#F2F12D',
+‘’,
+'#EED322',
+‘’,
+'#E6B71E',
+‘’,
+'#DA9C20',
+‘’,
+'#CA8323',
+‘’,
+'#B86B25',
+‘’,
+'#A25626',
+‘’,
+'#8B4225',
+‘’,
+'#723122'
+],
+                    'fill-opacity': [
+                              'case',
+                              ['boolean', ['feature-state', 'hover'], false],
+                              0.5,
+                              0.2
+                          ]
+                        }
+
+      })
+
+        map.addLayer({
+
+          'id': 'utilities-simplest-border-viz',
+
+            'source-layer': 'EvenSimplerPolygonsNC-9cvs7f',
+
+            'type': 'line',
+
+            'source': 'utilities-simplest',
+
+            'maxzoom': 6.99,
+
+            'paint': {
+
+             'line-color': '#4EE91E',
+
+             'line-width':2
+            
+
+          }
+
+
+      });
+       
+
+
+
+
+
+                map.addSource('utilities-simpler', {
+
+          'type': 'vector',
+
+          'url': 'mapbox://btw19.0j0f3yp6'
+
+        });
+
+        map.addLayer({
+
+          'id': 'utilities-simpler-viz',
+
+            'source-layer': 'SimplePolygonsNC-bz1aui',
+
+            'type': 'fill',
+
+            'source': 'utilities-simpler',
+
+            'minzoom': 7,
+            'maxzoom': 10,
+            'paint': {
+                    'fill-color': '#4EE91E',
+                    'fill-opacity': [
+                              'case',
+                              ['boolean', ['feature-state', 'hover'], false],
+                              0.5,
+                              0.2
+                          ]
+                        }
+              
+         
+
+      })
+
+ map.addLayer({
+
+            'id': 'utilities-simpler-border-viz',
+
+            'source-layer': 'SimplePolygonsNC-bz1aui',
+
+            'type': 'line',
+
+            'source': 'utilities-simpler',
+
+            'layout': {},
+
+            'minzoom': 10,
+
+            'paint': {
+              'line-color':'#4EE91E',
+             'line-width':2
+
+          }
+
+      }); 
+     
+
+
+
+
+
+
+
+        map.addSource('utilities', {
+
+          'type': 'vector',
+
+          'url': 'mapbox://btw19.9b4ihil6'
+
+        });
+
+        map.addLayer({
+
+            'id': 'utilities-viz',
+
+            'source-layer': 'utilities-9lcba8',
+
+            'type': 'fill',
+
+            'source': 'utilities',
+
+            'layout': {},
+
+            'minzoom': 10,
+
+            'paint': {
+                    'fill-color': '#4EE91E',
+                    'fill-opacity': [
+                              'case',
+                              ['boolean', ['feature-state', 'hover'], false],
+                              0.5,
+                              0.2
+                          ]
+                        }
+
+      });
+
+
+          map.addLayer({
+
+            'id': 'utilities-border-viz',
+
+            'source-layer': 'utilities-9lcba8',
+
+            'type': 'line',
+
+            'source': 'utilities',
+
+            'layout': {},
+
+            'minzoom': 10,
+
+            'paint': {
+              'line-color':'#4EE91E',
+             'line-width':2
+
+          }
+
+      });
+
+
+
+ map.addSource('utilitiesicons', {
+        'type': 'geojson',
+        'data': {
+        'type': 'FeatureCollection',
+        'features': [
+        {
+        'type': 'Feature',
+        'properties': {
+        'description': '<a href="https://google.com">One</a>',
+        'siteNumber': '02043433',
+        'iconSize': [60, 60]
+        },
+        'geometry': {
+        'type': 'Point',
+        'coordinates': [-77.2, 35.3]
+        }
+        },
+        {
+        'type': 'Feature',
+        'properties': {
+        'description': '<a href="https://google.com">Two</a>',
+        'siteNumber': '02053200',
+        'iconSize': [50, 50]
+        },
+        'geometry': {
+        'type': 'Point',
+        'coordinates': [-79.1, 35.99]
+        }
+        },
+        {
+        'type': 'Feature',
+        'properties': {
+        'description': '<a href="https://google.com">Three</a>',
+        'siteNumber': '02069000',
+        'iconSize': [40, 40]
+        },
+        'geometry': {
+        'type': 'Point',
+        'coordinates': [-80, 34.9]
+        }
+        }
+        ]
+        }
+        });
+
+      map.addLayer({
+                'id': 'utilitiesicons',
+                'type': 'symbol',
+                'source': 'utilitiesicons',
+                'layout': {
+                    'icon-image': 'watermill-15',
+                    'icon-allow-overlap': true,
+                    'icon-size': 1.5
+                }
+            });
+
+          });
+
+        map.on('mouseenter', 'utilitiesicons', function() {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'utilitiesicons', function() {
+            map.getCanvas().style.cursor = '';
+        });
+
+       map.on('click', 'utilities-viz', function(e) {
+        new mapboxgl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(e.features[0].properties.name)
+          .addTo(map);
+      });
+   
+      // Change the cursor to a pointer when the mouse is over the states layer.
+      map.on('mouseenter', 'utilities-viz', function() {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+   
+      // Change it back to a pointer when it leaves.
+      map.on('mouseleave', 'utilities-viz', function() {
+        map.getCanvas().style.cursor = '';
+      });
+
+
+
+            map.on('click', 'utilities-simpler-viz', function(e) {
+        new mapboxgl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(e.features[0].properties.name)
+          .addTo(map);
+      });
+   
+      // Change the cursor to a pointer when the mouse is over the states layer.
+      map.on('mouseenter', 'utilities-simpler-viz', function() {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+   
+      // Change it back to a pointer when it leaves.
+      map.on('mouseleave', 'utilities-simpler-viz', function() {
+        map.getCanvas().style.cursor = '';
+      });
+
+
+            map.on('click', 'utilities-simplest-viz', function(e) {
+        new mapboxgl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(e.features[0].properties.name)
+          .addTo(map);
+      });
+   
+      // Change the cursor to a pointer when the mouse is over the states layer.
+      map.on('mouseenter', 'utilities-simplest-viz', function() {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+   
+      // Change it back to a pointer when it leaves.
+      map.on('mouseleave', 'utilities-simplest-viz', function() {
+        map.getCanvas().style.cursor = '';
+      });
+
+
+
+map.on('click', 'utilitiesicons', function(e) {
+            var coordinates = e.features[0].geometry.coordinates.slice();
+            var description = e.features[0].properties.description;
+            var siteNumber = e.features[0].properties.siteNumber;
+
+        getJSON(`/nwis_data/${siteNumber}`, function(err, data) {
+          new_data = [];
+          //console.log("stuff")
+          for (i=0; i<data.data.length; i++) {
+            data.data[i][0] = new Date(data.data[i][0]);
+            //console.log("foo"); 
+          }
+          for (var k = 0; k < data.data.length; k++) {
+            new_data[k] = [];
+              for (var j = 0; j < 2; j++) {
+                  new_data[k][j] = data.data[k][j];
+              }
+          }
+          console.log(new_data);  
+          g.updateOptions({
+                  'file': new_data,
+                  'title': data.data[0][4],
+                  'labels': ["Date", data.data[0][2]]
+                  })
+        });//console.log(result.rows[0]['signal'])});
+      //document.getElementById("bigdiv").style.display = "inline-block";   
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
+        });
+
+
+
+
+        var quakeID = null;
+
+
+
+        map.on('mouseenter', 'utilities-viz', e => {
+
+         
+
+
+          // Set variables equal to the current feature's magnitude, location, and time
+
+
+          var quakeMagnitude = e.features[0].properties.PWSID; // changed 
+
+          var quakeLocation = e.features[0].properties.SystemName;
+
+
+
+          if (e.features.length > 0) {
+
+
+            // Display the magnitude, location, and time in the sidebar
+
+
+
+            magDisplay.textContent = quakeMagnitude;
+
+            locDisplay.textContent = quakeLocation;
+
+            quakeID = e.features[0].id;
+
+            // When the mouse moves over the earthquakes-viz layer, update the
+
+            // feature state for the feature under the mouse
+
+            if (quakeID) {
+
+            map.setFeatureState(
+            { source: 'utilities', sourceLayer: "utilities-9lcba8", id: quakeID },
+            { hover :true }
+            );
+            }
+            }
+            });
+
+
+
+        // When the mouse leaves the earthquakes-viz layer, update the
+
+        // feature state of the previously hovered feature
+      
+
+        map.on('mouseleave', 'utilities-viz', function() {
+
+          if (quakeID) {
+
+            map.setFeatureState(
+
+              {
+
+                source: 'utilities',
+
+                sourceLayer: "utilities-9lcba8",
+
+                id: quakeID
+
+              },
+
+              {
+
+                hover: false
+
+              }
+
+            );
+
+          }
+          
+
+        quakeID = null;
+
+
+        
+         
+
+          
+
+
+          // Remove the information from the previously hovered feature from the sidebar
+
+          magDisplay.textContent = '';
+
+          locDisplay.textContent = '';
+
+         
+
+        
+
+
+        });
+
+
+
+map.on('mouseenter', 'utilities-simpler-viz', e => {
+
+         
+
+
+          // Set variables equal to the current feature's magnitude, location, and time
+
+
+          var quakeMagnitude = e.features[0].properties.PWSID; // changed 
+
+          var quakeLocation = e.features[0].properties.SystemName;
+
+
+
+          if (e.features.length > 0) {
+
+
+            // Display the magnitude, location, and time in the sidebar
+
+
+
+            magDisplay.textContent = quakeMagnitude;
+
+            locDisplay.textContent = quakeLocation;
+
+            quakeID = e.features[0].id;
+
+            // When the mouse moves over the earthquakes-viz layer, update the
+
+            // feature state for the feature under the mouse
+
+            if (quakeID) {
+
+            map.setFeatureState(
+            { source: 'utilities-simpler', sourceLayer: "SimplePolygonsNC-bz1aui", id: quakeID },
+            { hover :true }
+            );
+            }
+            }
+            });
+
+
+
+        // When the mouse leaves the earthquakes-viz layer, update the
+
+        // feature state of the previously hovered feature
+      
+
+        map.on('mouseleave', 'utilities-simpler-viz', function() {
+
+          if (quakeID) {
+
+            map.setFeatureState(
+
+              {
+
+                source: 'utilities-simpler',
+
+                sourceLayer: "SimplePolygonsNC-bz1aui",
+
+                id: quakeID
+
+              },
+
+              {
+
+                hover: false
+
+              }
+
+            );
+
+          }
+          
+
+        quakeID = null;
+
+
+        
+         
+
+          
+
+
+          // Remove the information from the previously hovered feature from the sidebar
+
+          magDisplay.textContent = '';
+
+          locDisplay.textContent = '';
+
+         
+
+        
+
+
+        });
+
+
+
+        map.on('mouseenter', 'utilities-simplest-viz', e => {
+
+         
+
+
+          // Set variables equal to the current feature's magnitude, location, and time
+
+
+          var quakeMagnitude = e.features[0].properties.PWSID; // changed 
+
+          var quakeLocation = e.features[0].properties.SystemName;
+
+
+
+          if (e.features.length > 0) {
+
+
+            // Display the magnitude, location, and time in the sidebar
+
+
+
+            magDisplay.textContent = quakeMagnitude;
+
+            locDisplay.textContent = quakeLocation;
+
+            quakeID = e.features[0].id;
+
+            // When the mouse moves over the earthquakes-viz layer, update the
+
+            // feature state for the feature under the mouse
+
+            if (quakeID) {
+
+            map.setFeatureState(
+            { source: 'utilities-simplest', sourceLayer: "EvenSimplerPolygonsNC-9cvs7f", id: quakeID },
+            { hover :true }
+            );
+            }
+            }
+            });
+
+
+
+        // When the mouse leaves the earthquakes-viz layer, update the
+
+        // feature state of the previously hovered feature
+      
+
+        map.on('mouseleave', 'utilities-simplest-viz', function() {
+
+          if (quakeID) {
+
+            map.setFeatureState(
+
+              {
+
+                source: 'utilities-simplest',
+
+                sourceLayer: "EvenSimplerPolygonsNC-9cvs7f",
+
+                id: quakeID
+
+              },
+
+              {
+
+                hover: false
+
+              }
+
+            );
+
+          }
+          
+
+        quakeID = null;
+
+
+        
+
+          // Remove the information from the previously hovered feature from the sidebar
+
+          magDisplay.textContent = '';
+
+          locDisplay.textContent = '';
+
+         
+
+        
+
+
+	});
+
+
+	</script>
+	</body>
+	</html>
