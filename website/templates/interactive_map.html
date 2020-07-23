@@ -1,32 +1,32 @@
 <!DOCTYPE html>
-	<html>
-	<head>
-		<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
-       	<link
-       	href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css"
-       	rel="stylesheet"/>
-    	<script src='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js'></script>
-    	<link href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet' />
-    	<script src="/node_modules/dygraphs/dist/dygraph.js"></script>
+  <html>
+  <head>
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+        <link
+        href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css"
+        rel="stylesheet"/>
+      <script src='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js'></script>
+      <link href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet' />
+      <script src="/node_modules/dygraphs/dist/dygraph.js"></script>
         <link rel="stylesheet" href="/node_modules/dygraphs/dist/dygraph.css"/>
         <link href="{{ url_for('static', filename='stylesheets/style.css') }}" rel="stylesheet" type="text/css"/>
-    	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"/>
-    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link rel="icon" href="{{ url_for('static', filename='img/cropped-iow_favicon-32x32.png') }}" sizes="32x32">
-		<title>Data+ Interactive Map Tool</title>
-	</head>
-	<body>
-		<div class="topnav">
-			<a href="https://internetofwater.org/" class="iow" target="_blank"><img src="{{ url_for('static', filename='img/iowclearwhite.png') }}"></a>
-			<a href="/" class="navigation fa fa-home"></a>
-			<a href="./about_us" class="navigation">About Us</a>
-			<a href="./utilityfinder" class="navigation">Utility Finder</a>
-			<a href="./search" class="navigation">Interactive Map</a>
-		</div>
-		<div class='holder'>
-			<div id="boxes1">
-				<h2 style="padding-left: 20px; color: white;">Selector</h2>
-				<p style="padding-left: 20px; color: white; margin-bottom: 0;">Choose which you'd like to show</p>
+    <title>Data+ Interactive Map Tool</title>
+  </head>
+  <body>
+    <div class="topnav">
+      <a href="https://internetofwater.org/" class="iow" target="_blank"><img src="{{ url_for('static', filename='img/iowclearwhite.png') }}"></a>
+      <a href="/" class="navigation fa fa-home"></a>
+      <a href="./about_us" class="navigation">About Us</a>
+      <a href="./utilityfinder" class="navigation">Utility Finder</a>
+      <a href="./search" class="navigation">Interactive Map</a>
+    </div>
+    <div class='holder'>
+      <div id="boxes1">
+        <h2 style="padding-left: 20px; color: white;">Selector</h2>
+        <p style="padding-left: 20px; color: white; margin-bottom: 0;">Choose which you'd like to show</p>
         <div class='container'>
           <ul class="ks-cboxtags" id="checklist_sites">
             <li><p style="color: white;">Surface Water</p></li>
@@ -68,14 +68,14 @@
             <input type="date" id="endtime" value="2020-07-18" required>
           </section>
         </div>
-			</div>
-			<div id='interactivemap'></div>
-			    <div class="legend" id="intleg">
-	              <div><strong>PWSID:</strong>&nbsp;<span id="mag"></span></div>
-	              <div><strong>Name:</strong>&nbsp;<span id="loc"></span></div>
-			    </div>
-		  <div id="interactivegraph"></div>
-  		<div id="boxes2">
+      </div>
+      <div id='interactivemap'></div>
+          <div class="legend" id="intleg">
+                <div><strong>PWSID:</strong>&nbsp;<span id="mag"></span></div>
+                <div><strong>Name:</strong>&nbsp;<span id="loc"></span></div>
+          </div>
+      <div id="interactivegraph"></div>
+      <div id="boxes2">
         <!--<div class="listheader">
           <h1>List of Streams</h1>
         </div>
@@ -85,8 +85,8 @@
       <div id="frosted"></div>
       <div id="maphide"></div>
     </div>
-		<script type="text/javascript">
-  		var grapher = document.getElementById("interactivegraph");
+    <script type="text/javascript">
+      var grapher = document.getElementById("interactivegraph");
       var dataless = document.getElementById("dataless");
       var frosted = document.getElementById("frosted");
       var maphide = document.getElementById("maphide");
@@ -98,25 +98,25 @@
       var gage_max_365_box = document.getElementById("4");
       var gage_mean_365_box = document.getElementById("5");
 
-  		//x.style.display = "none";
-  		var getJSON = function(url, callback) {
-  		    var xhr = new XMLHttpRequest();
-  		    xhr.open('GET', url, true);
-  		    xhr.responseType = 'json';
-  		    xhr.onload = function() {
-  		      var status = xhr.status;
-  		      if (status === 200) {
-  		        callback(null, xhr.response);
-  		      } else {
-  		        callback(status, xhr.response);
-  		      }
-  		    };
-  		    xhr.send();
-  		};
+      //x.style.display = "none";
+      var getJSON = function(url, callback) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', url, true);
+          xhr.responseType = 'json';
+          xhr.onload = function() {
+            var status = xhr.status;
+            if (status === 200) {
+              callback(null, xhr.response);
+            } else {
+              callback(status, xhr.response);
+            }
+          };
+          xhr.send();
+      };
 
-		// is this the right place for this? 
-    	var data = 'date,precipitation\n2018-01-01,83.84160786786978\n';
-    	g = new Dygraph(
+    // is this the right place for this? 
+      var data = 'date,precipitation\n2018-01-01,83.84160786786978\n';
+      g = new Dygraph(
 
       // containing div
       document.getElementById("interactivegraph"),
@@ -128,15 +128,15 @@
         'legend': 'none',
         'visibility': [false]
       }
-		  );
+      );
 
-		mapboxgl.accessToken = 'pk.eyJ1IjoiYnR3MTkiLCJhIjoiY2tiOGR6MzI1MDNjaTJ0c3hnZHBmODRneSJ9.QVj1xKQ--FUvtw6soygk9g';
-		var map = new mapboxgl.Map({
-			container: 'interactivemap',
-			style: 'mapbox://styles/mapbox/light-v10', // stylesheet location
-			center: [-79.8193, 35.7596], // starting position [lng, lat]
-			zoom: 5.5 // starting zoom
-		});
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYnR3MTkiLCJhIjoiY2tiOGR6MzI1MDNjaTJ0c3hnZHBmODRneSJ9.QVj1xKQ--FUvtw6soygk9g';
+    var map = new mapboxgl.Map({
+      container: 'interactivemap',
+      style: 'mapbox://styles/mapbox/light-v10', // stylesheet location
+      center: [-79.8193, 35.7596], // starting position [lng, lat]
+      zoom: 5.5 // starting zoom
+    });
 
      map.addControl(new mapboxgl.NavigationControl());
         var magDisplay = document.getElementById('mag');
@@ -201,7 +201,35 @@
             'source': 'utilities-simplest',
             'maxzoom': 6.99,
             'paint': {
-             'line-color': '#723122',
+             'line-color':  [
+'interpolate',
+['linear'],
+['get', 'PWSID_INT'],
+0,
+'#ffffcc',
+100000,
+'#a1dab4',
+150000,
+'#ffff00',
+200000,
+'#41b6c4',
+250000,
+'#2c7fb8',
+300000,
+'#253494',
+340000,
+'#fed976',
+360000,
+'#f455f7',
+380000,
+'#feb24c',
+420000,
+'#12822c',
+450000,
+'#fd8d3c',
+800000,
+'#a20606'
+],
              'line-width':1
           }
       });
@@ -265,7 +293,35 @@
           'minzoom': 7,
           'maxzoom': 10,
           'paint': {
-             'line-color': '#723122',
+             'line-color':  [
+'interpolate',
+['linear'],
+['get', 'PWSID_INT'],
+0,
+'#ffffcc',
+100000,
+'#a1dab4',
+150000,
+'#ffff00',
+200000,
+'#41b6c4',
+250000,
+'#2c7fb8',
+300000,
+'#253494',
+340000,
+'#fed976',
+360000,
+'#f455f7',
+380000,
+'#feb24c',
+420000,
+'#12822c',
+450000,
+'#fd8d3c',
+800000,
+'#a20606'
+],
              'line-width':1
           }
       }); 
@@ -329,13 +385,41 @@
             'layout': {},
             'minzoom': 10,
             'paint': {
-              'line-color':'#723122',
+              'line-color': [
+'interpolate',
+['linear'],
+['get', 'PWSID_INT'],
+0,
+'#ffffcc',
+100000,
+'#a1dab4',
+150000,
+'#ffff00',
+200000,
+'#41b6c4',
+250000,
+'#2c7fb8',
+300000,
+'#253494',
+340000,
+'#fed976',
+360000,
+'#f455f7',
+380000,
+'#feb24c',
+420000,
+'#12822c',
+450000,
+'#fd8d3c',
+800000,
+'#a20606'
+],
              'line-width':2
           }
       });
 
-		//Lake Icons
- 		map.addSource('lakeicons', {
+    //Lake Icons
+    map.addSource('lakeicons', {
           'type': 'vector',
           'url': 'mapbox://btw19.1m2y3oo7'
         });
@@ -354,7 +438,7 @@
             });
 
         //Canal Icons
- 		map.addSource('canalicons', {
+    map.addSource('canalicons', {
           'type': 'vector',
           'url': 'mapbox://btw19.0fiwwcf6'
         });
@@ -373,7 +457,7 @@
       });
 
         //Ditch Icons
- 		map.addSource('ditchicons', {
+    map.addSource('ditchicons', {
           'type': 'vector',
           'url': 'mapbox://btw19.2amngdm3'
     });
@@ -392,7 +476,7 @@
             });
 
         //Estuary Icons
- 		map.addSource('estuaryicons', {
+    map.addSource('estuaryicons', {
           'type': 'vector',
           'url': 'mapbox://btw19.dcl57rc5'
         });
@@ -411,7 +495,7 @@
             });
 
         //Stream Icons
- 		map.addSource('streamicons', {
+    map.addSource('streamicons', {
           'type': 'vector',
           'url': 'mapbox://btw19.9agg0apw'
         });
@@ -449,9 +533,9 @@
         //buildLocationList();
         });
 
-		// enumerate ids of the layers
-		var toggleableLayerIds = ['lakeicons', 'streamicons', 'ditchicons', 'canalicons', 'estuaryicons', 'wellicons'];
-		 
+    // enumerate ids of the layers
+    var toggleableLayerIds = ['lakeicons', 'streamicons', 'ditchicons', 'canalicons', 'estuaryicons', 'wellicons'];
+     
 for (var i = 0; i < toggleableLayerIds.length; i++) {
       var id = toggleableLayerIds[i];
       var checkbox = document.getElementById(id);
@@ -487,7 +571,6 @@ function buildLocationList(data) {
      * which will be used several times below.
     *
     var prop = streamlocs.properties;
-
     /* Add a new listing section to the sidebar. 
     var listings = document.getElementById('boxes2');
     var listing = listings.appendChild(document.createElement('div'));
@@ -495,14 +578,12 @@ function buildLocationList(data) {
     listing.id = "listing-" + prop.site_no;
     /* Assign the `item` class to each listing for styling. 
     listing.className = 'item';
-
     /* Add the link to the individual listing created above. 
     var link = listing.appendChild(document.createElement('a'));
     link.href = '#';
     link.className = 'title';
     link.id = "link-" + prop.site_no;
     link.innerHTML = prop.station_nm;
-
     /* Add details to the individual listing. 
     var details = listing.appendChild(document.createElement('div'));
     details.innerHTML = prop.site_no;
@@ -514,102 +595,57 @@ function buildLocationList(data) {
 }
 */
 
-  var popup = new mapboxgl.Popup({
-    closeButton: false,
-    closeOnClick: false
-  });
-map.on('mouseenter', 'ditchicons', function(e) {
-      // Change the cursor style as a UI indicator.
-      map.getCanvas().style.cursor = 'pointer';
-      var coordinates = e.features[0].geometry.coordinates.slice();
-      var siteName = e.features[0].properties.station_nm;
-      // Ensure that if the map is zoomed out such that multiple
-      // copies of the feature are visible, the popup appears
-      // over the copy being pointed to.
-      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    var clickability = function(e) {
+      var clickedLayer = this.name;
+      //e.preventDefault();
+      //e.stopPropagation();
+      console.log(clickedLayer);
+    var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+    // toggle layer visibility by changing the layout object's visibility property
+    if (visibility === 'visible') {
+      map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+      this.className = '';
+    } else {
+      this.className = 'active';
+      map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
       }
-      // Populate the popup and set its coordinates
-      // based on the feature found.
-        popup
-          .setLngLat(coordinates)
-          .setHTML(siteName)
-          .addTo(map);
-      });
-      map.on('mouseleave', 'ditchicons', function() {
-        map.getCanvas().style.cursor = '';
-        popup.remove();
-      });
+    }
 
-map.on('mouseenter', 'canalicons', function(e) {
-      // Change the cursor style as a UI indicator.
-      map.getCanvas().style.cursor = 'pointer';
-      var coordinates = e.features[0].geometry.coordinates.slice();
-      var siteName = e.features[0].properties.station_nm;
-      // Ensure that if the map is zoomed out such that multiple
-      // copies of the feature are visible, the popup appears
-      // over the copy being pointed to.
-      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-      }
-      // Populate the popup and set its coordinates
-      // based on the feature found.
-        popup
-          .setLngLat(coordinates)
-          .setHTML(siteName)
-          .addTo(map);
-      });
-      map.on('mouseleave', 'canalicons', function() {
-        map.getCanvas().style.cursor = '';
-        popup.remove();
-      });
+        map.on('mouseenter', 'ditchicons', function() {
+            map.getCanvas().style.cursor = 'pointer';
+        });
 
-map.on('mouseenter', 'estuaryicons', function(e) {
-      // Change the cursor style as a UI indicator.
-      map.getCanvas().style.cursor = 'pointer';
-      var coordinates = e.features[0].geometry.coordinates.slice();
-      var siteName = e.features[0].properties.station_nm; 
-      // Ensure that if the map is zoomed out such that multiple
-      // copies of the feature are visible, the popup appears
-      // over the copy being pointed to.
-      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-      }
-      // Populate the popup and set its coordinates
-      // based on the feature found.
-        popup
-          .setLngLat(coordinates)
-          .setHTML(siteName)
-          .addTo(map);
-      });
-      map.on('mouseleave', 'estuaryicons', function() {
-        map.getCanvas().style.cursor = '';
-        popup.remove();
-      });
-   
-map.on('mouseenter', 'lakeicons', function(e) {
-      // Change the cursor style as a UI indicator.
-      map.getCanvas().style.cursor = 'pointer';
-      var coordinates = e.features[0].geometry.coordinates.slice();
-      var siteName = e.features[0].properties.station_nm;
-      // Ensure that if the map is zoomed out such that multiple
-      // copies of the feature are visible, the popup appears
-      // over the copy being pointed to.
-      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-      }
-      // Populate the popup and set its coordinates
-      // based on the feature found.
-        popup
-          .setLngLat(coordinates)
-          .setHTML(siteName)
-          .addTo(map);
-      });
-      map.on('mouseleave', 'lakeicons', function() {
-        map.getCanvas().style.cursor = '';
-        popup.remove();
-      });
-   
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'ditchicons', function() {
+            map.getCanvas().style.cursor = '';
+        });
+
+        map.on('mouseenter', 'canalicons', function() {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'canalicons', function() {
+            map.getCanvas().style.cursor = '';
+        });
+
+        map.on('mouseenter', 'estuaryicons', function() {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'estuaryicons', function() {
+            map.getCanvas().style.cursor = '';
+        });
+
+        map.on('mouseenter', 'lakeicons', function() {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'lakeicons', function() {
+            map.getCanvas().style.cursor = '';
+        });
       /*
        map.on('click', 'utilities-viz', function(e) {
         new mapboxgl.Popup()
@@ -619,17 +655,26 @@ map.on('mouseenter', 'lakeicons', function(e) {
       });
       */
 
+      var popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+      });
+
+
       map.on('mouseenter', 'streamicons', function(e) {
       // Change the cursor style as a UI indicator.
       map.getCanvas().style.cursor = 'pointer';
+       
       var coordinates = e.features[0].geometry.coordinates.slice();
       var siteName = e.features[0].properties.station_nm;
+       
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears
       // over the copy being pointed to.
       while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
       }
+       
       // Populate the popup and set its coordinates
       // based on the feature found.
         popup
@@ -637,36 +682,11 @@ map.on('mouseenter', 'lakeicons', function(e) {
           .setHTML(siteName)
           .addTo(map);
       });
+       
       map.on('mouseleave', 'streamicons', function() {
         map.getCanvas().style.cursor = '';
         popup.remove();
       });
-
-      map.on('mouseenter', 'wellicons', function(e) {
-      // Change the cursor style as a UI indicator.
-      map.getCanvas().style.cursor = 'pointer';
-      var coordinates = e.features[0].geometry.coordinates.slice();
-      var siteName = e.features[0].properties.station_nm;
-      // Ensure that if the map is zoomed out such that multiple
-      // copies of the feature are visible, the popup appears
-      // over the copy being pointed to.
-      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-      }
-      // Populate the popup and set its coordinates
-      // based on the feature found.
-        popup
-          .setLngLat(coordinates)
-          .setHTML(siteName)
-          .addTo(map);
-      });
-      map.on('mouseleave', 'wellicons', function() {
-        map.getCanvas().style.cursor = '';
-        popup.remove();
-      });
-
-
-
    
       // Change the cursor to a pointer when the mouse is over the states layer.
       map.on('mouseenter', 'utilities-viz', function() {
@@ -1261,5 +1281,5 @@ map.on('click', 'wellicons', function(e) {
 
 
     </script>
-	</body>
-	</html>
+  </body>
+  </html>
