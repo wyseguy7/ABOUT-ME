@@ -361,7 +361,7 @@ input[type=number] {
 
 .dygraph-legend {
   left: 550px !important;
-  top: 0px !important;
+  top: 15px !important;
   background-color: transparent !important;
 }
 

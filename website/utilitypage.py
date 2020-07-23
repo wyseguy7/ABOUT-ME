@@ -91,7 +91,7 @@ def send_surfacewater_avg(site_no, start_date, end_date):
         WHERE site_number = '{site_no}' AND a.datenew::TIMESTAMP BETWEEN '{start_date}'::TIMESTAMP AND '{end_date}'::TIMESTAMP
         ORDER BY a.year, a.month, a.day ASC""".format(site_no= site_no, start_date= start_date, end_date= end_date)
     data= pd.read_sql_query(query, cnx)
-    df1 = data.astype(object).replace(np.nan, 'None')
+    df1 = data.where(pd.notnull(data), None)
     return jsonify(**df1.to_dict('split'));
 
 @app.route('/nwis_groundwater_avg/<path:site_no>/<path:start_date>/<path:end_date>', methods=['GET'])
@@ -107,7 +107,7 @@ def send_groundwater_avg(site_no, start_date, end_date):
         WHERE site_number = '{site_no}' AND a.datenew::TIMESTAMP BETWEEN '{start_date}'::TIMESTAMP AND '{end_date}'::TIMESTAMP
         ORDER BY a.year, a.month, a.day ASC""".format(site_no= site_no, start_date= start_date, end_date= end_date)
     data= pd.read_sql_query(query, cnx)
-    df1 = data.astype(object).replace(np.nan, 'None')
+    df1 = data.where(pd.notnull(data), None)
     return jsonify(**df1.to_dict('split'));
 
 @app.route('/node_modules/<path:path>')
