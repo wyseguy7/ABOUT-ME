@@ -25,11 +25,11 @@
     </div>
     <div class='holder'>
       <div id="boxes1">
-        <h2 style="padding-left: 20px; color: white;">Selector</h2>
-        <p style="padding-left: 20px; color: white; margin-bottom: 0;">Choose which you'd like to show</p>
+        <h2 style="padding-left: 20px; font-size: 5vh; color: white;">Selector</h2>
+        <p style="padding-left: 20px; font-size: 3vh; color: white; margin-bottom: 0;">Choose which you'd like to show</p>
         <div class='container'>
           <ul class="ks-cboxtags" id="checklist_sites">
-            <li><p style="color: white;">Surface Water</p></li>
+            <li><p style="color: white; font-size: 3vh">Surface Water</p></li>
             <li><input type="checkbox" id="lakeicons"><label for="lakeicons">Lakes</label></li>
             <li><input type="checkbox" id="streamicons"><label for="streamicons">Streams</label></li>
             <li><input type="checkbox" id="ditchicons" ><label for="ditchicons">Ditches</label></li>
@@ -37,13 +37,18 @@
             <li><input type="checkbox" id="estuaryicons" ><label for="estuaryicons">Estuaries</label></li>
           </ul>
           <ul class="ks-cboxtags" id="checklist_sites_ground">
-            <li><p style="color: white;">Ground Water</p></li>
+            <li><p style="color: white; font-size: 3vh">Ground Water</p></li>
             <li><input type="checkbox" id="wellicons" ><label for="wellicons">Wells</label></li>
           </ul>
         </div>
         <div id="graph_checkboxes">
           <h3>Choose a site and then click the checkboxes to toggle graph data visibility:</h3>
           <div id="div_g"></div>
+          <section class="yearinput">
+            <label for="year_label">Select The Timeframe You Want To View</label><br>
+              <input type="date" id="starttime" value="2019-07-18" required>
+              <input type="date" id="endtime" value="2020-07-18" required>
+          </section>
           <p><b>All Time Data:</b></p>
           <p>
             <input type=checkbox id="0" onClick="change(this)">
@@ -62,11 +67,6 @@
             <input type=checkbox id="5" onClick="change(this)">
             <label for="5">Height Mean</label><br/>
           </p>
-          <section class="yearinput">
-          <label for="year_label">Select The Timeframe You Want To View</label><br>
-            <input type="date" id="starttime" value="2019-07-18" required>
-            <input type="date" id="endtime" value="2020-07-18" required>
-          </section>
         </div>
       </div>
       <div id='interactivemap'></div>
