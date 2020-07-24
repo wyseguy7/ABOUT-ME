@@ -518,17 +518,20 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
 .yearinput {
 	display: grid;
 	grid-template-columns: 11vw 11vw;
-	grid-template-rows: 2vh;
+	grid-template-rows: 13vh;
 }
 
 .startdate {
 	grid-column: 1 / 2;
 	grid-row: 1 / 2;
+	list-style-type: none;
+	margin-left: 0;
 }
 
 .enddate {
 	grid-column: 2 / 3;
 	grid-row: 1 / 2;
+	list-style-type: none;
 }
 
 /*
