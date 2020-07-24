@@ -26,7 +26,6 @@
     <div class='holder'>
       <div id="boxes1">
         <h2 style="padding-left: 20px; font-size: 4vh; color: white;">Selector</h2>
-        <p style="padding-left: 20px; font-size: 2vh; color: white; margin-bottom: 0;">Choose which you'd like to show</p>
         <div class='container'>
           <ul class="ks-cboxtags" id="checklist_sites">
             <li><p style="color: white; font-size: 2vh">Surface Water</p></li>
@@ -45,9 +44,14 @@
           <h3 style="margin-top: 0px;">Choose a site and then click the checkboxes to toggle graph data visibility:</h3>
           <div id="div_g"></div>
           <section class="yearinput">
-            <label for="year_label">Select The Timeframe You Want To View</label><br>
-              <input type="date" id="starttime" value="2019-07-18" required>
-              <input type="date" id="endtime" value="2020-07-18" required>
+            <ul class="startdate">
+              <li><p style="font-size: 2vh;">Start Date:</p></li>
+              <li><input type="date" id="starttime" value="2019-07-18" required></li>
+            </ul>
+            <ul class="enddate">
+              <li><p style="font-size: 2vh;">End Date:</p></li>
+              <li><input type="date" id="endtime" value="2020-07-18" required></li>
+            </ul>
           </section>
           <p><b>All Time Data:</b></p>
           <p>

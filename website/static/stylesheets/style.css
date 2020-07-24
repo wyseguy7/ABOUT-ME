@@ -515,6 +515,22 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
   background: rgba(255, 255, 255, 0.75);
 }
 
+.yearinput {
+	display: grid;
+	grid-template-columns: 11vw 11vw;
+	grid-template-rows: 2vh;
+}
+
+.startdate {
+	grid-column: 1 / 2;
+	grid-row: 1 / 2;
+}
+
+.enddate {
+	grid-column: 2 / 3;
+	grid-row: 1 / 2;
+}
+
 /*
 .listheader {
   background: #fff;
