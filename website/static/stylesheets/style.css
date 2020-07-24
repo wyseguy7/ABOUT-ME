@@ -25,7 +25,7 @@ body {
 	padding-right: 10px;
 }
 .fa { 
-	height: 20px;
+	height: 48px;
 	width: auto;
 }
 
@@ -361,7 +361,7 @@ input[type=number] {
 
 .dygraph-legend {
   left: 550px !important;
-  top: 19px !important;
+  top: 0px !important;
   background-color: transparent !important;
 }
 
