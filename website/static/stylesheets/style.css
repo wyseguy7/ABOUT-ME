@@ -435,8 +435,8 @@ input[type=number] {
     font-size: 1.75vh;
     display: grid;
     grid-template-columns: 11vw 11vw;
-	grid-template-rows: 56vh;
-	height: 50vh;
+	grid-template-rows: 44vh;
+	height: 44vh;
 }
 
 ul.ks-cboxtags {
