@@ -432,18 +432,18 @@ input[type=number] {
 .container {
     /*max-width: 640px; */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 2.5vh;
+    font-size: 1.75vh;
     display: grid;
     grid-template-columns: 11vw 11vw;
 	grid-template-rows: 56vh;
-	height: 56vh;
+	height: 50vh;
 }
 
 ul.ks-cboxtags {
     list-style: none;
     padding-left: 20px;
     padding-right: 20px;
-    padding-bottom: 20px;
+    margin-bottom: 0;
 }
 
 ul.ks-cboxtags li label{
@@ -454,7 +454,7 @@ ul.ks-cboxtags li label{
     color: #333;
     border-radius: 25px;
     white-space: nowrap;
-    margin: 3px 0px;
+    margin: 0.5vh 0px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
