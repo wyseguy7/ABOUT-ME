@@ -1,3 +1,24 @@
+#first import the functions for downloading data from NWIS
+import dataretrieval.nwis as nwis
+from datetime import date
+import datetime
+import codecs
+import pandas as pd, requests, json
+from sqlalchemy import create_engine
+import os
+
+hostname = 'rapid-1304.vm.duke.edu'
+port = '5432'
+username = os.environ['USERNAME']
+password = os.environ['PASSWORD']
+dbname = 'postgres'
+
+postgres_str = 'postgresql://{username}:{password}@{hostname}:{port}/{dbname}'.format(hostname=hostname,
+                                                                                 port=port,
+                                                                                 username=username,
+                                                                                  password=password,
+                                                                                 dbname=dbname)
+
 #GROUNDWATER!!!!!!!
 dfg = pd.read_table('groundwaterdata', sep='\t', lineterminator='\r')
 df2g = dfg[["site_no", "station_nm", "site_tp_cd"]]
