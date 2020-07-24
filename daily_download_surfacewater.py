@@ -1,3 +1,12 @@
+#first import the functions for downloading data from NWIS
+import dataretrieval.nwis as nwis
+from datetime import date
+import datetime
+import codecs
+import pandas as pd, requests, json
+from sqlalchemy import create_engine
+import os
+
 hostname = 'rapid-1304.vm.duke.edu'
 port = '5432'
 username = os.environ['USERNAME']
@@ -10,15 +19,6 @@ postgres_str = 'postgresql://{username}:{password}@{hostname}:{port}/{dbname}'.f
                                                                                   password=password,
                                                                                  dbname=dbname)
 cnx = create_engine(postgres_str)
-
-#first import the functions for downloading data from NWIS
-import dataretrieval.nwis as nwis
-from datetime import date
-import datetime
-import codecs
-import pandas as pd, requests, json
-from sqlalchemy import create_engine
-import os
 
 df = pd.read_table('surfacewaterdata', sep='\t', lineterminator='\r')
 df2 = df[["site_no", "station_nm", "site_tp_cd"]]
