@@ -46,11 +46,11 @@
           <section class="yearinput">
             <ul class="startdate">
               <li><p style="font-size: 2.5vh; margin-bottom: 3px; margin-top: 0px;">Start Date:</p></li>
-              <li><input type="date" id="starttime" value="2019-07-18" required></li>
+              <li><input type="date" id="starttime" required></li>
             </ul>
             <ul class="enddate">
               <li><p style="font-size: 2.5vh; margin-bottom: 3px; margin-top: 0px;">End Date:</p></li>
-              <li><input type="date" id="endtime" value="2020-07-18" required></li>
+              <li><input type="date" id="endtime" required></li>
             </ul>
           </section>
           <p style="margin-top: 0vh"><b>All Time Data:</b></p>
@@ -75,11 +75,15 @@
       </div>
       <div id='interactivemap'></div>
           <div class="legend" id="intleg">
-                <div><strong>PWSID:</strong>&nbsp;<span id="mag"></span></div>
-                <div><strong>Name:</strong>&nbsp;<span id="loc"></span></div>
+                <div style="font-size: 16px;"><strong>PWSID:</strong>&nbsp;<span id="mag"></span></div>
+                <div style="font-size: 16px;"><strong>Name:</strong>&nbsp;<span id="loc"></span></div>
           </div>
       <div id="boxesmiddle"></div>
       <div id="graphtitle"></div>
+      <div class="infonote">
+        <p><em>Click and drag to zoom in</em></p>
+        <p><em>Double click to zoom out</em></p>
+      </div>
       <div id="interactivegraph"></div>
       <div id="boxes2">
         <!--<div class="listheader">
@@ -103,6 +107,17 @@
       var gage_min_365_box = document.getElementById("3");
       var gage_max_365_box = document.getElementById("4");
       var gage_mean_365_box = document.getElementById("5");
+      var startbox = document.getElementById("starttime");
+      var endbox = document.getElementById("endtime");
+      var today = new Date()
+      var todayday = String(today.getDate()).padStart(2, '0');
+      var thismonth = String(today.getMonth() + 1).padStart(2, '0');
+      var thisyear = today.getFullYear();
+      var lastyear = today.getFullYear() - 1;
+      document.getElementById("starttime").value = lastyear + '-' + thismonth + '-' + todayday;
+      console.log(document.getElementById("starttime").value);
+      document.getElementById("endtime").value = thisyear + '-' + thismonth + '-' + todayday;
+      console.log(document.getElementById("starttime").value);
 
       //x.style.display = "none";
       var getJSON = function(url, callback) {
