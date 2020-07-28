@@ -1,3 +1,4 @@
+#! /home/rapiduser/miniconda3/bin/python
 #first import the functions for downloading data from NWIS
 import dataretrieval.nwis as nwis
 from datetime import date
@@ -33,7 +34,7 @@ days = datetime.timedelta(1)
 new_date = date.today() - days
 newest_date = (str(new_date))
 
-for i in range(siteNumbers.size):
+for i in range(10):
     if i==0:
         continue
     query = """SELECT datenew, year, month, day, site_number FROM nwis.surfacewater_daily_site_2
@@ -63,6 +64,7 @@ for i in range(siteNumbers.size):
 finalDF = newDF[["00065_Mean", "00065_Maximum", "00065_Minimum", "site_no", "00065_Mean_cd", "00065_Maximum_cd", "00065_Minimum_cd", 'year','month', 'day', "datenew"]]
 finalDF = finalDF.reset_index(drop=True)
 finalDF = finalDF.rename(columns={"00065_Mean": "gage_mean", "00065_Maximum": "gage_height_max", "00065_Minimum": "gage_height_min", "site_no":"site_number", "00065_Mean_cd": "gage_mean_cd", "00065_Maximum_cd": "gage_max_cd", "00065_Minimum_cd": "gage_min_cd"})
+print(finalDF)
 
 finalDF.to_sql(name='surfacewater_daily_site_2', schema='nwis', con=cnx, if_exists='append', index=False)
 
