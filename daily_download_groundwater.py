@@ -18,7 +18,7 @@ postgres_str = 'postgresql://{username}:{password}@{hostname}:{port}/{dbname}'.f
                                                                                  username=username,
                                                                                   password=password,
                                                                                  dbname=dbname)
-
+cnx = create_engine(postgres_str)
 #GROUNDWATER!!!!!!!
 dfg = pd.read_table('groundwaterdata', sep='\t', lineterminator='\r')
 df2g = dfg[["site_no", "station_nm", "site_tp_cd"]]
