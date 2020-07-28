@@ -1,3 +1,4 @@
+#! /home/rapiduser/miniconda3/bin/python
 #first import the functions for downloading data from NWIS
 import dataretrieval.nwis as nwis
 from datetime import date
