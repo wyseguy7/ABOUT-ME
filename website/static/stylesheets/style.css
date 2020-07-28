@@ -340,7 +340,7 @@ input[type=number] {
 }
 
 #boxesmiddle {
-	background-color: white;
+	background-color: rgba(255, 255, 255, 0.9);
 	grid-row: 2 / 3;
 	grid-column: 2 / 3;
 }
@@ -349,7 +349,24 @@ input[type=number] {
 	grid-row: 2 / 3;
 	grid-column: 2 / 3;
 	margin: 0 auto;
+	font-style: bold;
 }
+
+.infonote {
+	grid-row: 2 / 3;
+	grid-column: 2 / 3;
+	float: left;
+	justify-content: center;
+	z-index: 7;
+}
+
+.infonote p {
+	margin-top: 0;
+	font-size: 1.75vh;
+	color: #333 !important;
+	margin-bottom: 0;
+}
+
 
 
 #boxes2 {
@@ -367,7 +384,7 @@ input[type=number] {
 }
 
 #interactivegraph {
-	height: 47vh;
+	height: 42vh;
 	width: 56vw;
 	background-color: rgba(255, 255, 255, 0.9);
 	margin: 0 auto;
@@ -413,7 +430,7 @@ input[type=number] {
 	height: 47vh;
 	width: 56vw;
 	grid-column: 2 / 3;
-	grid-row: 3 / 4;
+	grid-row: 2 / 4;
 	z-index: 9;
 	visibility: hidden;
 	background-color: rgba(255, 255, 255, 0.5);
