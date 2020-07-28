@@ -556,34 +556,40 @@
 
     // enumerate ids of the layers
     var toggleableLayerIds = ['lakeicons', 'streamicons', 'ditchicons', 'canalicons', 'estuaryicons', 'wellicons'];
+
+
+    var popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+      });
      
-for (var i = 0; i < toggleableLayerIds.length; i++) {
-      var id = toggleableLayerIds[i];
-      var checkbox = document.getElementById(id);
-      //var checkboxlabel = document.createElement('label');
-      //var node = document.createElement('li');
-      //var spacer = document.createElement('br');
-      checkbox.textContent = id;
-      checkbox.checked = false;
-       
-      checkbox.onclick = function(e) {
-        var clickedLayer = this.textContent;
-        //e.preventDefault();
-        e.stopPropagation();
-         
-        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-        // toggle layer visibility by changing the layout object's visibility property
-        if (visibility === 'visible') {
-          map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-          this.className = '';
-        } else {
-          this.className = 'active';
-          map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-          }
-      };
-       
-      //layers.appendChild(spacer);
-    }
+    for (var i = 0; i < toggleableLayerIds.length; i++) {
+          var id = toggleableLayerIds[i];
+          var checkbox = document.getElementById(id);
+          //var checkboxlabel = document.createElement('label');
+          //var node = document.createElement('li');
+          //var spacer = document.createElement('br');
+          checkbox.textContent = id;
+          checkbox.checked = false;
+           
+          checkbox.onclick = function(e) {
+            var clickedLayer = this.textContent;
+            //e.preventDefault();
+            e.stopPropagation();
+            popup.remove();
+            var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+            // toggle layer visibility by changing the layout object's visibility property
+            if (visibility === 'visible') {
+              map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+              this.className = '';
+            } else {
+              this.className = 'active';
+              map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+              }
+          };
+           
+          //layers.appendChild(spacer);
+        }
 /*
 function buildLocationList(data) {
   data.features.forEach(function(streamlocs, i){
@@ -615,58 +621,6 @@ function buildLocationList(data) {
   });
 }
 */
-
-    var clickability = function(e) {
-      var clickedLayer = this.name;
-      //e.preventDefault();
-      //e.stopPropagation();
-      console.log(clickedLayer);
-    var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-    // toggle layer visibility by changing the layout object's visibility property
-    if (visibility === 'visible') {
-      map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-      this.className = '';
-    } else {
-      this.className = 'active';
-      map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-      }
-    }
-
-        map.on('mouseenter', 'ditchicons', function() {
-            map.getCanvas().style.cursor = 'pointer';
-        });
-
-        // Change it back to a pointer when it leaves.
-        map.on('mouseleave', 'ditchicons', function() {
-            map.getCanvas().style.cursor = '';
-        });
-
-        map.on('mouseenter', 'canalicons', function() {
-            map.getCanvas().style.cursor = 'pointer';
-        });
-
-        // Change it back to a pointer when it leaves.
-        map.on('mouseleave', 'canalicons', function() {
-            map.getCanvas().style.cursor = '';
-        });
-
-        map.on('mouseenter', 'estuaryicons', function() {
-            map.getCanvas().style.cursor = 'pointer';
-        });
-
-        // Change it back to a pointer when it leaves.
-        map.on('mouseleave', 'estuaryicons', function() {
-            map.getCanvas().style.cursor = '';
-        });
-
-        map.on('mouseenter', 'lakeicons', function() {
-            map.getCanvas().style.cursor = 'pointer';
-        });
-
-        // Change it back to a pointer when it leaves.
-        map.on('mouseleave', 'lakeicons', function() {
-            map.getCanvas().style.cursor = '';
-        });
       /*
        map.on('click', 'utilities-viz', function(e) {
         new mapboxgl.Popup()
@@ -675,12 +629,6 @@ function buildLocationList(data) {
           .addTo(map);
       });
       */
-
-      var popup = new mapboxgl.Popup({
-        closeButton: false,
-        closeOnClick: false
-      });
-
 
       map.on('mouseenter', 'streamicons', function(e) {
       // Change the cursor style as a UI indicator.
@@ -705,6 +653,141 @@ function buildLocationList(data) {
       });
        
       map.on('mouseleave', 'streamicons', function() {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+
+      map.on('mouseenter', 'lakeicons', function(e) {
+      // Change the cursor style as a UI indicator.
+      map.getCanvas().style.cursor = 'pointer';
+       
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var siteName = e.features[0].properties.station_nm;
+       
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+       
+      // Populate the popup and set its coordinates
+      // based on the feature found.
+        popup
+          .setLngLat(coordinates)
+          .setHTML(siteName)
+          .addTo(map);
+      });
+       
+      map.on('mouseleave', 'lakeicons', function() {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+
+      map.on('mouseenter', 'ditchicons', function(e) {
+      // Change the cursor style as a UI indicator.
+      map.getCanvas().style.cursor = 'pointer';
+       
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var siteName = e.features[0].properties.station_nm;
+       
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+       
+      // Populate the popup and set its coordinates
+      // based on the feature found.
+        popup
+          .setLngLat(coordinates)
+          .setHTML(siteName)
+          .addTo(map);
+      });
+       
+      map.on('mouseleave', 'ditchicons', function() {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+
+      map.on('mouseenter', 'canalicons', function(e) {
+      // Change the cursor style as a UI indicator.
+      map.getCanvas().style.cursor = 'pointer';
+       
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var siteName = e.features[0].properties.station_nm;
+       
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+       
+      // Populate the popup and set its coordinates
+      // based on the feature found.
+        popup
+          .setLngLat(coordinates)
+          .setHTML(siteName)
+          .addTo(map);
+      });
+       
+      map.on('mouseleave', 'canalicons', function() {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+
+      map.on('mouseenter', 'estuaryicons', function(e) {
+      // Change the cursor style as a UI indicator.
+      map.getCanvas().style.cursor = 'pointer';
+       
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var siteName = e.features[0].properties.station_nm;
+       
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+       
+      // Populate the popup and set its coordinates
+      // based on the feature found.
+        popup
+          .setLngLat(coordinates)
+          .setHTML(siteName)
+          .addTo(map);
+      });
+       
+      map.on('mouseleave', 'estuaryicons', function() {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+
+      map.on('mouseenter', 'wellicons', function(e) {
+      // Change the cursor style as a UI indicator.
+      map.getCanvas().style.cursor = 'pointer';
+       
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var siteName = e.features[0].properties.station_nm;
+       
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+       
+      // Populate the popup and set its coordinates
+      // based on the feature found.
+        popup
+          .setLngLat(coordinates)
+          .setHTML(siteName)
+          .addTo(map);
+      });
+       
+      map.on('mouseleave', 'wellicons', function() {
         map.getCanvas().style.cursor = '';
         popup.remove();
       });
