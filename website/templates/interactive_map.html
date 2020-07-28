@@ -147,7 +147,9 @@
       {
         'ylabel': 'Gage Height (ft)',
         'legend': 'none',
-        'visibility': [false]
+        'visibility': [false],
+        'hideOverlayOnMouseOut': [true],
+        'labelsSeparateLines': [true]
       }
       );
 
@@ -876,7 +878,7 @@ map.on('click', 'streamicons', function(e) {
                   'visibility': [gage_min_avg_box.checked, gage_max_avg_box.checked, gage_mean_avg_box.checked, gage_min_365_box.checked, gage_max_365_box.checked, gage_mean_365_box.checked],
                   'file': new_data,
                   'title': '',
-                  'legend': 'always',
+                  'legend': 'follow',
                   'labels': labels_list
                   });
             console.log("p3")
@@ -940,7 +942,7 @@ map.on('click', 'lakeicons', function(e) {
                   'visibility': [gage_min_avg_box.checked, gage_max_avg_box.checked, gage_mean_avg_box.checked, gage_min_365_box.checked, gage_max_365_box.checked, gage_mean_365_box.checked],
                   'file': new_data,
                   'title': '',
-                  'legend': 'always',
+                  'legend': 'follow',
                   'labels': labels_list
                   });
             console.log("p3")
@@ -1004,7 +1006,7 @@ map.on('click', 'estuaryicons', function(e) {
                   'visibility': [gage_min_avg_box.checked, gage_max_avg_box.checked, gage_mean_avg_box.checked, gage_min_365_box.checked, gage_max_365_box.checked, gage_mean_365_box.checked],
                   'file': new_data,
                   'title': '',
-                  'legend': 'always',
+                  'legend': 'follow',
                   'labels': labels_list
                   });
             console.log("p3")
@@ -1068,7 +1070,7 @@ map.on('click', 'canalicons', function(e) {
                   'visibility': [gage_min_avg_box.checked, gage_max_avg_box.checked, gage_mean_avg_box.checked, gage_min_365_box.checked, gage_max_365_box.checked, gage_mean_365_box.checked],
                   'file': new_data,
                   'title': '',
-                  'legend': 'always',
+                  'legend': 'follow',
                   'labels': labels_list
                   });
             console.log("p3")
@@ -1132,7 +1134,7 @@ map.on('click', 'ditchicons', function(e) {
                   'visibility': [gage_min_avg_box.checked, gage_max_avg_box.checked, gage_mean_avg_box.checked, gage_min_365_box.checked, gage_max_365_box.checked, gage_mean_365_box.checked],
                   'file': new_data,
                   'title': '',
-                  'legend': 'always',
+                  'legend': 'follow',
                   'labels': labels_list
                   });
             console.log("p3")
@@ -1195,7 +1197,7 @@ map.on('click', 'wellicons', function(e) {
                   'visibility': [gage_min_avg_box.checked, gage_max_avg_box.checked, gage_mean_avg_box.checked, gage_min_365_box.checked, gage_max_365_box.checked, gage_mean_365_box.checked],
                   'file': new_data,
                   'title': '',
-                  'legend': 'always',
+                  'legend': 'follow',
                   'labels': labels_list
                   });
             console.log("p3")
