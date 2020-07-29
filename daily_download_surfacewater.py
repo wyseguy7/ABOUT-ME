@@ -21,7 +21,7 @@ postgres_str = 'postgresql://{username}:{password}@{hostname}:{port}/{dbname}'.f
                                                                                  dbname=dbname)
 cnx = create_engine(postgres_str)
 
-df = pd.read_table('surfacewaterdata', sep='\t', lineterminator='\r')
+df = pd.read_table('/home/rapiduser/ABOUT-ME/surfacewaterdata', sep='\t', lineterminator='\r')
 df2 = df[["site_no", "station_nm", "site_tp_cd"]]
 siteNumbers = df2["site_no"]
 
@@ -61,9 +61,17 @@ for i in range(10):
     newDF[['year','month', 'day']] = newDF.date.str.split("-",expand=True)
     newDF["datecloser"] = newDF['month'].str.cat(newDF['day'], sep= "/")
     newDF["datenew"] = newDF['datecloser'].str.cat(newDF['year'], sep= "/")
+
+
+
+if len(newDF)==0:
+    print("exiting early")
+    exit()
+
 finalDF = newDF[["00065_Mean", "00065_Maximum", "00065_Minimum", "site_no", "00065_Mean_cd", "00065_Maximum_cd", "00065_Minimum_cd", 'year','month', 'day', "datenew"]]
 finalDF = finalDF.reset_index(drop=True)
 finalDF = finalDF.rename(columns={"00065_Mean": "gage_mean", "00065_Maximum": "gage_height_max", "00065_Minimum": "gage_height_min", "site_no":"site_number", "00065_Mean_cd": "gage_mean_cd", "00065_Maximum_cd": "gage_max_cd", "00065_Minimum_cd": "gage_min_cd"})
 
 finalDF.to_sql(name='surfacewater_daily_site_2', schema='nwis', con=cnx, if_exists='append', index=False)
 
+print("all done!")

@@ -19,7 +19,7 @@
     <div class="topnav">
       <a href="https://internetofwater.org/" class="iow" target="_blank"><img src="{{ url_for('static', filename='img/iowclearwhite.png') }}"></a>
       <a href="/" class="navigation fa fa-home"></a>
-      <a href="./about_us" class="navigation">About Us</a>
+      <a href="./about_us" class="navigation">Meet the Team</a>
       <a href="./utilityfinder" class="navigation">Utility Finder</a>
       <a href="./search" class="navigation">Interactive Map</a>
     </div>
@@ -41,7 +41,6 @@
           </ul>
         </div>
         <div id="graph_checkboxes">
-          <h3 style="margin-top: 0px; margin-bottom: 0px;">Choose a site to toggle graph visibility:</h3>
           <div id="div_g"></div>
           <section class="yearinput">
             <ul class="startdate">
@@ -53,8 +52,8 @@
               <li><input type="date" id="endtime" required></li>
             </ul>
           </section>
-          <p style="margin-top: 0vh"><b>All Time Data:</b></p>
-          <p>
+          <p style="margin-top: 0vh; font-size: 2.5vh"><b>All Time Data:</b></p>
+          <p style="font-size: 2vh">
             <input type=checkbox id="0" onClick="change(this)">
             <label for="0">Height Minimun</label><br/>
             <input type=checkbox id="1" onClick="change(this)">
@@ -62,8 +61,8 @@
             <input type=checkbox id="2" onClick="change(this)">
             <label for="2">Height Mean</label><br/>
           </p>
-          <p><b>Your Timeframe:</b></p>
-          <p>
+          <p style="font-size: 2.5vh"><b>Your Timeframe:</b></p>
+          <p style="font-size: 2vh">
             <input type=checkbox id="3" onClick="change(this)">
             <label for="3">Height Minimum</label><br/>
             <input type=checkbox id="4" onClick="change(this)">
@@ -147,7 +146,9 @@
       {
         'ylabel': 'Gage Height (ft)',
         'legend': 'none',
-        'visibility': [false]
+        'visibility': [false],
+        'hideOverlayOnMouseOut': [true],
+        'labelsSeparateLines': [true]
       }
       );
 
@@ -876,7 +877,7 @@ map.on('click', 'streamicons', function(e) {
                   'visibility': [gage_min_avg_box.checked, gage_max_avg_box.checked, gage_mean_avg_box.checked, gage_min_365_box.checked, gage_max_365_box.checked, gage_mean_365_box.checked],
                   'file': new_data,
                   'title': '',
-                  'legend': 'always',
+                  'legend': 'follow',
                   'labels': labels_list
                   });
             console.log("p3")
@@ -940,7 +941,7 @@ map.on('click', 'lakeicons', function(e) {
                   'visibility': [gage_min_avg_box.checked, gage_max_avg_box.checked, gage_mean_avg_box.checked, gage_min_365_box.checked, gage_max_365_box.checked, gage_mean_365_box.checked],
                   'file': new_data,
                   'title': '',
-                  'legend': 'always',
+                  'legend': 'follow',
                   'labels': labels_list
                   });
             console.log("p3")
@@ -1004,7 +1005,7 @@ map.on('click', 'estuaryicons', function(e) {
                   'visibility': [gage_min_avg_box.checked, gage_max_avg_box.checked, gage_mean_avg_box.checked, gage_min_365_box.checked, gage_max_365_box.checked, gage_mean_365_box.checked],
                   'file': new_data,
                   'title': '',
-                  'legend': 'always',
+                  'legend': 'follow',
                   'labels': labels_list
                   });
             console.log("p3")
@@ -1068,7 +1069,7 @@ map.on('click', 'canalicons', function(e) {
                   'visibility': [gage_min_avg_box.checked, gage_max_avg_box.checked, gage_mean_avg_box.checked, gage_min_365_box.checked, gage_max_365_box.checked, gage_mean_365_box.checked],
                   'file': new_data,
                   'title': '',
-                  'legend': 'always',
+                  'legend': 'follow',
                   'labels': labels_list
                   });
             console.log("p3")
@@ -1132,7 +1133,7 @@ map.on('click', 'ditchicons', function(e) {
                   'visibility': [gage_min_avg_box.checked, gage_max_avg_box.checked, gage_mean_avg_box.checked, gage_min_365_box.checked, gage_max_365_box.checked, gage_mean_365_box.checked],
                   'file': new_data,
                   'title': '',
-                  'legend': 'always',
+                  'legend': 'follow',
                   'labels': labels_list
                   });
             console.log("p3")
@@ -1195,7 +1196,7 @@ map.on('click', 'wellicons', function(e) {
                   'visibility': [gage_min_avg_box.checked, gage_max_avg_box.checked, gage_mean_avg_box.checked, gage_min_365_box.checked, gage_max_365_box.checked, gage_mean_365_box.checked],
                   'file': new_data,
                   'title': '',
-                  'legend': 'always',
+                  'legend': 'follow',
                   'labels': labels_list
                   });
             console.log("p3")
