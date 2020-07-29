@@ -17,7 +17,7 @@ dbname = 'postgres'
 postgres_str = 'postgresql://{username}:{password}@{hostname}:{port}/{dbname}'.format(hostname=hostname, port=port, username=username, password=password, dbname=dbname)
 cnx = create_engine(postgres_str)
 #GROUNDWATER!!!!!!!
-df = pd.read_table('groundwaterdata', sep='\t', lineterminator='\r')
+df = pd.read_table('/home/rapiduser/ABOUT-ME/groundwaterdata', sep='\t', lineterminator='\r')
 df2 = df[["site_no", "station_nm", "site_tp_cd"]]
 siteNumbers = df2["site_no"]
 
