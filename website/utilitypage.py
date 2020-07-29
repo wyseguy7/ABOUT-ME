@@ -62,7 +62,8 @@ def search():
             except: 
                 return render_template("error_page.html", ad=address, zipc=zipcode, st=state)
         utility = correct_utility_function(latitude, longitude)
-        (utility3, link2) = utility
+        (utility3, pwsidout) = utility
+        link2 = "https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=" + pwsidout + "&year=2019"
         return render_template("search.html", lat=latitude, lon=longitude, gran= granularity, ad=address, zipc=zipcode, st=state, uname=utility3, linkname=link2)
     elif request.method == "GET":
         return render_template("interactive_map.html")
@@ -185,7 +186,7 @@ Newest_Updates =pd.DataFrame(Dict)
 Newest_Updates = Newest_Updates[~Newest_Updates['PWSID'].astype(str).str.startswith('PWSID')]
 
 
-html_page = urlopen("https://www.ncwater.org/Drought_Monitoring/statusReport.php") #grab the links in a usable format
+html_page = urlopen("https://www.ncwater.org/WUDC/app/LWSP/search.php") #grab the links in a usable format
 soup = BeautifulSoup(html_page, features="lxml")
 ev_list = []
 for tag in soup.find_all('tr'):
@@ -208,6 +209,7 @@ polygons = Combined_Utility['geometry'] #return utility name and link
 utility1 = Combined_Utility['Water System']
 utility2 = Combined_Utility['SystemName']
 link = Combined_Utility['External Links']
+pwsidnum = Combined_Utility['PWSID']
 
 def missing_utility(i):
     UtilityCloser = utility2.replace('_', ' ')   #make the utility readable
@@ -262,6 +264,6 @@ def correct_utility_function(latitude, longitude):
             if pd.isnull(utility1.iloc[i]):
                 return missing_utility(i)
             else:
-                return(utility1.iloc[i], link.iloc[i])
+                return(utility1.iloc[i], pwsidnum.iloc[i])
 
     return None, None
