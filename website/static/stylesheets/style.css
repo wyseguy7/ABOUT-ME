@@ -320,7 +320,7 @@ input[type=number] {
 	height: 40px;
 	width: 400px;
 	border: 2px black solid;
-	background-color: rgba(255, 255, 255, 0.9);
+	background-color: rgba(255, 255, 255, .9);
 }
 
 /* Interactive Map Page */
@@ -337,12 +337,16 @@ input[type=number] {
 	background-image: linear-gradient(#333, lightblue);
 	grid-column: 1 / 2;
 	grid-row: 1 / 4;
+	min-width: 268px;
 }
 
 #boxesmiddle {
-	background-color: rgba(255, 255, 255, 0.9);
+	background-color: rgba(255, 255, 255, 1);
 	grid-row: 2 / 3;
 	grid-column: 2 / 3;
+	min-width: 650px;
+	min-height: 24px;
+	z-index: 5;
 }
 
 #graphtitle {
@@ -381,15 +385,20 @@ input[type=number] {
 	margin: 0 auto;
 	grid-column: 2 / 3;
 	grid-row: 1 / 2;
+	min-width: 650px;
+	min-height: 250px;
 }
 
 #interactivegraph {
 	height: 42vh;
 	width: 56vw;
-	background-color: rgba(255, 255, 255, 0.9);
+	background-color: rgba(255, 255, 255, 1);
 	margin: 0 auto;
 	grid-column: 2 / 3;
 	grid-row: 3 / 4;
+	min-width: 650px;
+	min-height: 198px;
+	z-index: 4;
 }
 
 .dygraph-legend {
@@ -412,6 +421,7 @@ input[type=number] {
 #graph_checkboxes {
 	padding: 15px;
 	color: white;
+	padding-top: 0px !important;
 }
 
 #dataless {
@@ -425,6 +435,8 @@ input[type=number] {
 	grid-row: 3 / 4;
 	position: relative;
 	top: 15vh;
+	min-width: 650px;
+	min-height: 198px;
 }
 
 #frosted {
@@ -435,6 +447,8 @@ input[type=number] {
 	z-index: 9;
 	visibility: hidden;
 	background-color: rgba(255, 255, 255, 0.5);
+	min-width: 650px;
+	min-height: 198px;
 }
 
 #maphide {
@@ -557,18 +571,18 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
 	grid-column: 1 / 2;
 	grid-row: 1 / 2;
 	list-style-type: none;
-	margin-left: -2vw;
 	margin-top: 0vh;
 	margin-bottom:0px;
+	padding-left: 0px;
 }
 
 .enddate {
 	grid-column: 2 / 3;
 	grid-row: 1 / 2;
 	list-style-type: none;
-	margin-left: -3vw;
 	margin-top: 0vh;
 	margin-bottom:0px;
+	padding-left: 0px;
 }
 
 /*
