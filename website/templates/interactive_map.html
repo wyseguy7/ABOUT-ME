@@ -167,12 +167,12 @@
       map.on('load', function() {
         map.addSource('utilities-simplest', {
           'type': 'vector',
-          'url': 'mapbox://btw19.c5i9z094'
+          'url': 'mapbox://btw19.5z1058m4'
         });
 
       map.addLayer({
           'id': 'utilities-simplest-viz',
-            'source-layer': 'EvenSimplerPolygonsNC-a1qsdf',
+            'source-layer': 'EvenSimplerPolygonsNC',
             'type': 'fill',
             'source': 'utilities-simplest',
             'maxzoom': 6.99,
@@ -218,7 +218,7 @@
 
       map.addLayer({
           'id': 'utilities-simplest-border-viz',
-            'source-layer': 'EvenSimplerPolygonsNC-a1qsdf',
+            'source-layer': 'EvenSimplerPolygonsNC',
             'type': 'line',
             'source': 'utilities-simplest',
             'maxzoom': 6.99,
@@ -258,12 +258,12 @@
        
       map.addSource('utilities-simpler', {
           'type': 'vector',
-          'url': 'mapbox://btw19.4edt3p8r'
+          'url': 'mapbox://btw19.9dqf4mdv'
       });
 
         map.addLayer({
           'id': 'utilities-simpler-viz',
-          'source-layer': 'SimplePolygonsNC-4d1tv2',
+          'source-layer': 'SimplePolygonsNC',
           'type': 'fill',
           'source': 'utilities-simpler',
           'minzoom': 7,
@@ -309,7 +309,7 @@
 
       map.addLayer({
           'id': 'utilities-simpler-border-viz',
-          'source-layer': 'SimplePolygonsNC-4d1tv2',
+          'source-layer': 'SimplePolygonsNC',
           'type': 'line',
           'source': 'utilities-simpler',
           'minzoom': 7,
@@ -350,12 +350,12 @@
   
       map.addSource('utilities', {
           'type': 'vector',
-          'url': 'mapbox://btw19.283iigb7'
+          'url': 'mapbox://btw19.6hn7398b'
         });
 
       map.addLayer({
           'id': 'utilities-viz',
-          'source-layer': 'utilities-35banb',
+          'source-layer': 'utilities',
           'type': 'fill',
           'source': 'utilities',
           'layout': {},
@@ -401,7 +401,7 @@
 
       map.addLayer({
             'id': 'utilities-border-viz',
-            'source-layer': 'utilities-35banb',
+            'source-layer': 'utilities',
             'type': 'line',
             'source': 'utilities',
             'layout': {},
@@ -1270,7 +1270,7 @@ map.on('click', 'wellicons', function(e) {
             // feature state for the feature under the mouse
             if (quakeID) {
               map.setFeatureState(
-              { source: 'utilities', sourceLayer: "utilities-35banb", id: quakeID },
+              { source: 'utilities', sourceLayer: "utilities", id: quakeID },
               { hover :true }
               );
             }
@@ -1286,7 +1286,7 @@ map.on('click', 'wellicons', function(e) {
             map.setFeatureState(
               {
                 source: 'utilities',
-                sourceLayer: "utilities-35banb",
+                sourceLayer: "utilities",
                 id: quakeID
               },
               {
@@ -1315,7 +1315,7 @@ map.on('click', 'wellicons', function(e) {
             // feature state for the feature under the mouse
             if (quakeID) {
               map.setFeatureState(
-              { source: 'utilities-simpler', sourceLayer: "SimplePolygonsNC-4d1tv2", id: quakeID },
+              { source: 'utilities-simpler', sourceLayer: "SimplePolygonsNC", id: quakeID },
               { hover :true }
               );
             }
@@ -1334,7 +1334,7 @@ map.on('click', 'wellicons', function(e) {
             map.setFeatureState(
               {
                 source: 'utilities-simpler',
-                sourceLayer: "SimplePolygonsNC-4d1tv2",
+                sourceLayer: "SimplePolygonsNC",
                 id: quakeID
               },
               {
@@ -1361,7 +1361,7 @@ map.on('click', 'wellicons', function(e) {
             // feature state for the feature under the mouse
             if (quakeID) {
               map.setFeatureState(
-              { source: 'utilities-simplest', sourceLayer: "EvenSimplerPolygonsNC-a1qsdf", id: quakeID },
+              { source: 'utilities-simplest', sourceLayer: "EvenSimplerPolygonsNC", id: quakeID },
               { hover :true }
               );
             }
@@ -1375,7 +1375,7 @@ map.on('click', 'wellicons', function(e) {
             map.setFeatureState(
               {
                 source: 'utilities-simplest',
-                sourceLayer: "EvenSimplerPolygonsNC-a1qsdf",
+                sourceLayer: "EvenSimplerPolygonsNC",
                 id: quakeID
               },
               {
