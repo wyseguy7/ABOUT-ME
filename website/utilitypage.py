@@ -30,55 +30,43 @@ import lxml.html as lh
 app = Flask(__name__, static_url_path='')
 app.static_folder = 'static'
 
+
+#Route for the Home Page
 @app.route('/')
 def home_page():
     return render_template('Homepage.html')
 
-@app.route('/about_us')
+#Route for the Meet The Team Page
+@app.route('/meet_the_team')
 def aboutteam():
     return render_template('about_us.html')
 
+#Route for the Utility Finder input page
 @app.route('/utilityfinder')
 def utiltyfinder():
     return render_template('utilityfinder.html')
 
-@app.route('/map')
-def serve_map():
-    lat = request.args.get('lat')
-    lon = request.args.get('lon')
-    return render_template('index.html', lat=lat, lon=lon)
-
-
+#Route for the result of the Utility Finder input page
 @app.route('/search', methods=["GET", "POST"]) #POST requests that a web server accepts the data enclosed in the body of the request message
 def search():
     if request.method == "POST":       #GET- retrieves information from the server
-        address = request.form["address"]
-        zipcode = request.form["zipcode"]
-        state = request.form["state"]
+        address = request.form["address"]     #gets address from input field
+        zipcode = request.form["zipcode"]     #gets zipcode from input field
+        state = request.form["state"]         #gets state from input field
         latitude, longitude, granularity = geocode_real(address, zipcode, state)
-        if latitude == 0 and longitude ==0:
+        if latitude == 0 and longitude ==0:  #case for if the geocode function for address returns nothing
             try:
-                latitude, longitude, granularity = geocode_zip(zipcode, state)
+                latitude, longitude, granularity = geocode_zip(zipcode, state)  #tries the backup geocode function
             except: 
-                return render_template("error_page.html", ad=address, zipc=zipcode, st=state)
+                return render_template("error_page.html", ad=address, zipc=zipcode, st=state)   #errors out if both functions return nothing
         utility = correct_utility_function(latitude, longitude)
         (utility3, pwsidout) = utility
-        link2 = "https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=" + pwsidout + "&year=2019"
+        link2 = "https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=" + pwsidout + "&year=2019"  #link format for utility information page
         return render_template("search.html", lat=latitude, lon=longitude, gran= granularity, ad=address, zipc=zipcode, st=state, uname=utility3, linkname=link2)
-    elif request.method == "GET":
+    elif request.method == "GET":  #routes to interactive map if there's no posted input
         return render_template("interactive_map.html")
 
-'''
-@app.route('/nwis_data/<path:site_no>',methods=['GET'])
-def send_data(site_no):
-    query = """SELECT a.*, b.site_name FROM nwis.daily a JOIN nwis.sites b 
-ON a.nwis_site_no = b.nwis_site_no WHERE a.nwis_site_no = '{}'""".format(site_no)
-    data = pd.read_sql_query(query, cnx)# get site_data from sql 
-    data['ts'] = data['ts'].apply(lambda x: x.strftime("%Y-%m-%d") )
-    # {"dates": [1,2,3,4], "signal": [1,2,3,4]}
-    return jsonify(**data.to_dict('split'))
-'''
-
+#Route for retrieving data from the database for surface water
 @app.route('/nwis_surfacewater_avg/<path:site_no>/<path:start_date>/<path:end_date>', methods=['GET'])
 def send_surfacewater_avg(site_no, start_date, end_date):
     query = """SELECT a.datenew, b.gage_height_min_avg, b.gage_height_max_avg, b.gage_mean_avg,
@@ -92,9 +80,11 @@ def send_surfacewater_avg(site_no, start_date, end_date):
         WHERE site_number = '{site_no}' AND a.datenew::TIMESTAMP BETWEEN '{start_date}'::TIMESTAMP AND '{end_date}'::TIMESTAMP
         ORDER BY a.year, a.month, a.day ASC""".format(site_no= site_no, start_date= start_date, end_date= end_date)
     data= pd.read_sql_query(query, cnx)
-    df1 = data.where(pd.notnull(data), None)
+    df1 = data.where(pd.notnull(data), None) #replaces nulls with Nones for dygraphs to read the data table properly
     return jsonify(**df1.to_dict('split'));
 
+
+#Route for retrieving data from the database for ground water
 @app.route('/nwis_groundwater_avg/<path:site_no>/<path:start_date>/<path:end_date>', methods=['GET'])
 def send_groundwater_avg(site_no, start_date, end_date):
     query = """SELECT a.datenew, b.depth_below_land_ft_min_avg, b.depth_below_land_ft_max_avg, b.depth_below_land_ft_mean_avg,
@@ -108,12 +98,18 @@ def send_groundwater_avg(site_no, start_date, end_date):
         WHERE site_number = '{site_no}' AND a.datenew::TIMESTAMP BETWEEN '{start_date}'::TIMESTAMP AND '{end_date}'::TIMESTAMP
         ORDER BY a.year, a.month, a.day ASC""".format(site_no= site_no, start_date= start_date, end_date= end_date)
     data= pd.read_sql_query(query, cnx)
-    df1 = data.where(pd.notnull(data), None)
+    df1 = data.where(pd.notnull(data), None) #replaces nulls with Nones for dygraphs to read the data table properly
     return jsonify(**df1.to_dict('split'));
 
+
+#Route for allowing dygraphs to use node modules stored in the node modules folder
 @app.route('/node_modules/<path:path>')
 def send_js(path):
     return send_from_directory('node_modules', path)
+
+#
+## FUNCTIONS FOR FINDING LOCATIONS
+#
 
 locator = Nominatim(user_agent="otherGeocoder")
 

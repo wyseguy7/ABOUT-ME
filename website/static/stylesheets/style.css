@@ -354,6 +354,7 @@ input[type=number] {
 	grid-column: 2 / 3;
 	margin: 0 auto;
 	font-style: bold;
+	z-index: 6;
 }
 
 .infonote {
