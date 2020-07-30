@@ -1,42 +1,42 @@
 <!DOCTYPE html>
-	<html>
-	<head>
-       	<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
-       	<link
-       	href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css"
-       	rel="stylesheet"/>
-    	<script src='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js'></script>
-    	<link href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet' />
-    	<script src="/node_modules/dygraphs/dist/dygraph.js"></script>
+  <html>
+  <head>
+        <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+        <link
+        href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css"
+        rel="stylesheet"/>
+      <script src='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js'></script>
+      <link href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet' />
+      <script src="/node_modules/dygraphs/dist/dygraph.js"></script>
       <link rel='houseicon' href="{{ url_for('static', filename='img/Home_icon_grey.png') }}">
       <link rel="stylesheet" href="/node_modules/dygraphs/dist/dygraph.css"/>
       <link href="{{ url_for('static', filename='stylesheets/style.css') }}" rel="stylesheet" type="text/css"/>
-    	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"/>
-    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link rel="icon" href="{{ url_for('static', filename='img/cropped-iow_favicon-32x32.png') }}" sizes="32x32">
-		<!--<script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
-		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" /> -->
-		<title>Data+ Utility Finder Homepage</title>
-	</head>
-	<body>
-	<div class="topnav">
-	  <a href="https://internetofwater.org/" class="iow" target="_blank"><img src="{{ url_for('static', filename='img/iowclearwhite.png') }}"></a>
-	  <a href="/" class="navigation fa fa-home"></a>
-	  <a href="./meet_the_team" class="navigation">Meet the Team</a>
-	  <a href="./utilityfinder" class="navigation">Utility Finder</a>
-	  <a href="./search" class="navigation">Interactive Map</a>
-	</div>
-	<!-- <h1>Result</h1> -->
-	<div id="interface">
-		<section id="reporting">
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" /> -->
+    <title>Data+ Utility Finder Homepage</title>
+  </head>
+  <body>
+  <div class="topnav">
+    <a href="https://internetofwater.org/" class="iow" target="_blank"><img src="{{ url_for('static', filename='img/iowclearwhite.png') }}"></a>
+    <a href="/" class="navigation fa fa-home"></a>
+    <a href="./meet_the_team" class="navigation">Meet the Team</a>
+    <a href="./utilityfinder" class="navigation">Utility Finder</a>
+    <a href="./search" class="navigation">Interactive Map</a>
+  </div>
+  <!-- <h1>Result</h1> -->
+  <div id="interface">
+    <section id="reporting">
       <h1 id="resultstitle" style="text-align: center">Results</h1>
       <div id="report_text">
-  			{% if gran == 'zipcode_level' %}
-  			<p class="warning"><strong>Warning: Address was unreadable so using zipcode to display utilities</strong></p>
-  			{% endif %}
-  			{% if uname == 'None' %}
-  			<p class="warning"><strong>Warning: No utility for your area to display</strong></p>
-  			{% endif %}
+        {% if gran == 'zipcode_level' %}
+        <p class="warning"><strong>Warning: Address was unreadable so using zipcode to display utilities</strong></p>
+        {% endif %}
+        {% if uname == 'None' %}
+        <p class="warning"><strong>Warning: No utility for your area to display</strong></p>
+        {% endif %}
         {% if ad == '' %}
         <p><strong>No Address Given</strong></p>
         {% else %}
@@ -45,52 +45,50 @@
         <p><strong>Zipcode is</strong> {{zipc}}</p>
         <!--<p>State is {{st}}</p>-->
         <!--Granularity is : {{gran}}</p>-->
-  			<p><strong>Latitude is</strong> {{lat}}</p>
+        <p><strong>Latitude is</strong> {{lat}}</p>
         <p><strong>Longitude is</strong> {{lon}} </p>
         {% if uname == 'None' %}
-  			<p><strong>No Utility/Well Water</strong></p>
+        <p><strong>No Utility/Well Water</strong></p>
         {% else %}
         <p><strong>Utility is </strong>{{uname}}</p>
         {% endif %}
         <br>
-  			<p style="text-align: center;"><strong>Follow this link to get more information about your Utility:</strong></p><br>
+        <p style="text-align: center;"><strong>Follow this link to get more information about your Utility:</strong></p><br>
         <div id="plan_link"><a href={{linkname}} target="_blank">Utility Info</a></div>
       </div>
-		</section>
+    </section>
 
-	<!-- 	<iframe src="map?lat={{lat}}&lon={{lon}}" id="mapfigure" style='float: left; width: 800px; height: 500px'></iframe> -->
-			<div id='mapfigure'></div>
-		    <div class="legend" id="searchleg">
+  <!--  <iframe src="map?lat={{lat}}&lon={{lon}}" id="mapfigure" style='float: left; width: 800px; height: 500px'></iframe> -->
+      <div id='mapfigure'></div>
+        <div class="legend" id="searchleg">
               <div style="font-size: 16px;"><strong>PWSID:</strong>&nbsp;<span id="mag"></span></div>
               <div style="font-size: 16px;"><strong>Name:</strong>&nbsp;<span id="loc"></span></div>
-		    </div>
-		<!-- <div id="graphdiv"></div>. -->
-	<script type="text/javascript">
-  		var x = document.getElementById("graphdiv")
-  		//x.style.display = "none";
-  		var getJSON = function(url, callback) {
-  		    var xhr = new XMLHttpRequest();
-  		    xhr.open('GET', url, true);
-  		    xhr.responseType = 'json';
-  		    xhr.onload = function() {
-  		      var status = xhr.status;
-  		      if (status === 200) {
-  		        callback(null, xhr.response);
-  		      } else {
-  		        callback(status, xhr.response);
-  		      }
-  		    };
-  		    xhr.send();
-  		};
+        </div>
+    <!-- <div id="graphdiv"></div>. -->
+  <script type="text/javascript">
+      var x = document.getElementById("graphdiv")
+      //x.style.display = "none";
+      var getJSON = function(url, callback) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', url, true);
+          xhr.responseType = 'json';
+          xhr.onload = function() {
+            var status = xhr.status;
+            if (status === 200) {
+              callback(null, xhr.response);
+            } else {
+              callback(status, xhr.response);
+            }
+          };
+          xhr.send();
+      };
 
-		// is this the right place for this? 
+    // is this the right place for this? 
     /*
-    	var data = 'date,precipitation\n2018-01-01,83.84160786786978\n';
-    	g = new Dygraph(
-
+      var data = 'date,precipitation\n2018-01-01,83.84160786786978\n';
+      g = new Dygraph(
       // containing div
       document.getElementById("graphdiv"),
-
       // CSV or path to a CSV file.
       data,
       {
@@ -98,20 +96,20 @@
         title: 'title', //'Calculation of Amount of Units from Streamgage',
         legend: 'always'
       }
-		  );
+      );
       */
 
-		mapboxgl.accessToken = 'pk.eyJ1IjoiYnR3MTkiLCJhIjoiY2tiOGR6MzI1MDNjaTJ0c3hnZHBmODRneSJ9.QVj1xKQ--FUvtw6soygk9g';
-		var map = new mapboxgl.Map({
-			container: 'mapfigure',
-			style: 'mapbox://styles/mapbox/light-v10', // stylesheet location
-			center: [{{lon}}, {{lat}}], // starting position [lng, lat]
-			zoom: 12 // starting zoom
-		});
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYnR3MTkiLCJhIjoiY2tiOGR6MzI1MDNjaTJ0c3hnZHBmODRneSJ9.QVj1xKQ--FUvtw6soygk9g';
+    var map = new mapboxgl.Map({
+      container: 'mapfigure',
+      style: 'mapbox://styles/mapbox/light-v10', // stylesheet location
+      center: [{{lon}}, {{lat}}], // starting position [lng, lat]
+      zoom: 12 // starting zoom
+    });
 
     map.addControl(new mapboxgl.NavigationControl());
 
-		map.on('load', function() {
+    map.on('load', function() {
         map.loadImage(
         '/img/Home_icon_grey.png',
         function(error, image) {
@@ -156,12 +154,12 @@
       map.on('load', function() {
         map.addSource('utilities-simplest', {
           'type': 'vector',
-          'url': 'mapbox://btw19.c5i9z094'
+          'url': 'mapbox://btw19.5z1058m4'
         });
 
       map.addLayer({
           'id': 'utilities-simplest-viz',
-            'source-layer': 'EvenSimplerPolygonsNC-a1qsdf',
+            'source-layer': 'EvenSimplerPolygonsNC',
             'type': 'fill',
             'source': 'utilities-simplest',
             'maxzoom': 6.99,
@@ -207,7 +205,7 @@
 
       map.addLayer({
           'id': 'utilities-simplest-border-viz',
-            'source-layer': 'EvenSimplerPolygonsNC-a1qsdf',
+            'source-layer': 'EvenSimplerPolygonsNC',
             'type': 'line',
             'source': 'utilities-simplest',
             'maxzoom': 6.99,
@@ -247,12 +245,12 @@
        
       map.addSource('utilities-simpler', {
           'type': 'vector',
-          'url': 'mapbox://btw19.4edt3p8r'
+          'url': 'mapbox://btw19.9dqf4mdv'
       });
 
         map.addLayer({
           'id': 'utilities-simpler-viz',
-          'source-layer': 'SimplePolygonsNC-4d1tv2',
+          'source-layer': 'SimplePolygonsNC',
           'type': 'fill',
           'source': 'utilities-simpler',
           'minzoom': 7,
@@ -298,7 +296,7 @@
 
       map.addLayer({
           'id': 'utilities-simpler-border-viz',
-          'source-layer': 'SimplePolygonsNC-4d1tv2',
+          'source-layer': 'SimplePolygonsNC',
           'type': 'line',
           'source': 'utilities-simpler',
           'minzoom': 7,
@@ -339,12 +337,12 @@
   
       map.addSource('utilities', {
           'type': 'vector',
-          'url': 'mapbox://btw19.283iigb7'
+          'url': 'mapbox://btw19.6hn7398b'
         });
 
       map.addLayer({
           'id': 'utilities-viz',
-          'source-layer': 'utilities-35banb',
+          'source-layer': 'utilities',
           'type': 'fill',
           'source': 'utilities',
           'layout': {},
@@ -390,7 +388,7 @@
 
       map.addLayer({
             'id': 'utilities-border-viz',
-            'source-layer': 'utilities-35banb',
+            'source-layer': 'utilities',
             'type': 'line',
             'source': 'utilities',
             'layout': {},
@@ -553,7 +551,7 @@ map.on('click', 'utilitiesicons', function(e) {
             // feature state for the feature under the mouse
             if (quakeID) {
               map.setFeatureState(
-              { source: 'utilities', sourceLayer: "utilities-35banb", id: quakeID },
+              { source: 'utilities', sourceLayer: "utilities", id: quakeID },
               { hover :true }
               );
             }
@@ -569,7 +567,7 @@ map.on('click', 'utilitiesicons', function(e) {
             map.setFeatureState(
               {
                 source: 'utilities',
-                sourceLayer: "utilities-35banb",
+                sourceLayer: "utilities",
                 id: quakeID
               },
               {
@@ -598,7 +596,7 @@ map.on('click', 'utilitiesicons', function(e) {
             // feature state for the feature under the mouse
             if (quakeID) {
               map.setFeatureState(
-              { source: 'utilities-simpler', sourceLayer: "SimplePolygonsNC-4d1tv2", id: quakeID },
+              { source: 'utilities-simpler', sourceLayer: "SimplePolygonsNC", id: quakeID },
               { hover :true }
               );
             }
@@ -617,7 +615,7 @@ map.on('click', 'utilitiesicons', function(e) {
             map.setFeatureState(
               {
                 source: 'utilities-simpler',
-                sourceLayer: "SimplePolygonsNC-4d1tv2",
+                sourceLayer: "SimplePolygonsNC",
                 id: quakeID
               },
               {
@@ -644,7 +642,7 @@ map.on('click', 'utilitiesicons', function(e) {
             // feature state for the feature under the mouse
             if (quakeID) {
               map.setFeatureState(
-              { source: 'utilities-simplest', sourceLayer: "EvenSimplerPolygonsNC-a1qsdf", id: quakeID },
+              { source: 'utilities-simplest', sourceLayer: "EvenSimplerPolygonsNC", id: quakeID },
               { hover :true }
               );
             }
@@ -658,7 +656,7 @@ map.on('click', 'utilitiesicons', function(e) {
             map.setFeatureState(
               {
                 source: 'utilities-simplest',
-                sourceLayer: "EvenSimplerPolygonsNC-a1qsdf",
+                sourceLayer: "EvenSimplerPolygonsNC",
                 id: quakeID
               },
               {
@@ -674,6 +672,6 @@ map.on('click', 'utilitiesicons', function(e) {
       });
 
 
-	</script>
-	</body>
-	</html>
+  </script>
+  </body>
+  </html>
