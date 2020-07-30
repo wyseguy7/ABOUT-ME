@@ -111,14 +111,14 @@ def send_js(path):
 ## FUNCTIONS FOR FINDING LOCATIONS
 #
 
-locator = Nominatim(user_agent="otherGeocoder")
+locator = Nominatim(user_agent="otherGeocoder")   #Our geocoder of choice
 
 def geocode_real (address, zipcode, state):  #geocoder address to coordinates
     lista = []
     lista.append(address)
     lista.append(zipcode)
     lista.append(state)
-    addressfull = ' '.join(lista)
+    addressfull = ' '.join(lista)  #creates string address from three separate inputs
     try: 
         location = locator.geocode(addressfull)
         if address == "":
@@ -126,19 +126,21 @@ def geocode_real (address, zipcode, state):  #geocoder address to coordinates
         else:
             return location.latitude, location.longitude, "address_level"
     except:
-        return 0, 0, "failure"
+        return 0, 0, "failure"  #backup case, should push to geocode zip
 
-def geocode_zip (zipcode, state):
+def geocode_zip (zipcode, state):  #geocoder zip to coordinates as backup
     listb = []
     listb.append(zipcode)
     listb.append(state)
-    halfaddress = ' '.join(listb)
+    halfaddress = ' '.join(listb) #creates string address from two separate inputs
     try:
         zip_middle = locator.geocode(halfaddress)
         return zip_middle.latitude, zip_middle.longitude, "zipcode_level"
     except:
         return 0, 0, "failure"
 
+
+##SECTION FOR ALLOWING DATA TO BE READ/WRITTEN FROM THE DATABASE
 
 hostname = 'rapid-1304.vm.duke.edu'
 port = '5432'
@@ -153,6 +155,9 @@ postgres_str = 'postgresql://{username}:{password}@{hostname}:{port}/{dbname}'.f
                                                                                   password=password,
                                                                                  dbname=dbname)
 cnx = create_engine(postgres_str)
+
+
+##HANDLES GETTING LINKS FROM NCWATER WEBSITE
 
 response = requests.get('https://www.ncwater.org/Drought_Monitoring/statusReport.php/')  #conservation status info webscraping
 stored_contents = lh.fromstring(response.content)
@@ -180,21 +185,7 @@ for j in range(1,len(table_elements)):
 Dict ={title:column for (title,column) in col}
 Newest_Updates =pd.DataFrame(Dict)
 Newest_Updates = Newest_Updates[~Newest_Updates['PWSID'].astype(str).str.startswith('PWSID')]
-
-
-html_page = urlopen("https://www.ncwater.org/WUDC/app/LWSP/search.php") #grab the links in a usable format
-soup = BeautifulSoup(html_page, features="lxml")
-ev_list = []
-for tag in soup.find_all('tr'):
-    Answer = tag.find_all('a')
-    if Answer != []:
-        ev_list.append(Answer[0]['href'])
-    else:
-        pass
-Link_Dataframe = pd.DataFrame(ev_list)
-Link_Dataframe.columns = ["External Links"]
-Bigger_Dataframe = pd.merge(Newest_Updates, Link_Dataframe, left_index=True, right_index=True)
-Bigger_Dataframe
+Bigger_Dataframe = Newest_Updates
 
 filepath = os.path.join('..', 'Boundaries', 'NC_statewide_CWS_areas.gpkg')
 StateWide = gpd.read_file(filepath) #make large usable dataframe with both names and links
@@ -204,10 +195,11 @@ Combined_Utility = pd.merge(Bigger_Dataframe, StateWide, 'right', on="PWSID")
 polygons = Combined_Utility['geometry'] #return utility name and link
 utility1 = Combined_Utility['Water System']
 utility2 = Combined_Utility['SystemName']
-link = Combined_Utility['External Links']
 pwsidnum = Combined_Utility['PWSID']
 
-def missing_utility(i):
+##BACKUP UTILITY NAME FUNCTION
+
+def missing_utility(i):  
     UtilityCloser = utility2.replace('_', ' ')   #make the utility readable
     UtilityCloser = UtilityCloser.replace('\'', '')
     UtilityCloser = UtilityCloser.replace('\"', '')
@@ -252,6 +244,8 @@ def missing_utility(i):
                     return(' '.join(UtilityTown[0 :6]), "No link provided by utility company")
             else:
                 return(utility2.iloc[i], "No link provided by utility company")
+
+##PRIMARY UTILITY NAME FUCNTION
 
 def correct_utility_function(latitude, longitude):
     coordinate = Point(longitude, latitude)
